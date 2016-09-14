@@ -51,7 +51,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > Response
 
-    HTTP 200 : Success
+    HTTP 200 : UserID and token or apikey
 
     HTTP 401 : Access Denied
 
