@@ -114,7 +114,8 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > mydic : User's Custom dictionary [Array]
 >> dicname: dictionary list [String]
->> favorite: contents list (Array Contains ONLY word's id) [number Array] 
+>> favorite: contents list [number Array] 
+> (Array Contains ONLY word's id)
 
 ### Word
 
