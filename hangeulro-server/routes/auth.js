@@ -8,22 +8,22 @@ router.get('/', function(req, res, next) {
 
 
 router.post('/register', function(req, res, next){
-   if(req.query.userid === '' || req.query.pw === '' || req.query.username === ''){
+   if(req.query.userid === undefined || req.query.pw === undefined || req.query.username === undefined || req.query.userid === '' || req.query.pw === '' ||  req.query.username === ''){
       return res.status(403).send("Params Missing");
    }else{
       var current = new Users({
                 userid: req.query.userid,
                 pw: req.query.pw,
                 username: req.query.username,
-	            token: rndString.generate()
+	        token: rndString.generate()
       });
       current.save(function(err, data) {
           if (err) { // TODO handle the error
-  	        if(err.errmsg.indexOf("dup") !== -1){
+ 	     if(err.errmsg.indexOf("dup") !== -1){
               return res.status(300).send("already exists");
              }else{
               return res.status(400).send("DB Error");
-			 }
+             }
           }else{ 
              return res.status(200).send(current);
           }

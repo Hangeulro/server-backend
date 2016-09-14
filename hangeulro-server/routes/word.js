@@ -28,7 +28,7 @@ router.post('/find', function(req, res) {
      for(var i =0; i<result.length; i++){
        if (result[i].word.indexOf(sh) !== -1) {
           data.push(result[i]);
-       }else{
+       }else if(result[i].similar !== null){
         for(var j = 0; j<result[i].similar.length; j++){
           if(result[i].similar[j].indexOf(sh) !== -1){
             data.push(result[i]);
