@@ -97,6 +97,17 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     HTTP 401 : No word Found
 
+* POST /word/cata
+
+> Params
+
+    cata : word catalog  [String]
+
+> Response
+
+    HTTP 200 : return word [String Json]
+
+    HTTP 401 : No word Found
 
 ## Database Schema
 
@@ -129,7 +140,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > similar : similar Word [String Array]
 
-> cata : category [String Array]
+> cata : catalog [String Array]
 
 > tag : tag of Word [String Array]
 
@@ -145,5 +156,4 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 > good :  [Number]
 
 > bad : [Number]
-
 
