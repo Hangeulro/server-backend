@@ -14,7 +14,7 @@ var word = require('./routes/word');
 var app = express();
 
 var UserSchema = new mongoose.Schema({
-  id:{type: String, required:true, unique:true},
+  userid:{type: String, required:true, unique:true},
   pw:{type: String, required:true},
   username: {type: String},
   apikey: {type: String},
@@ -36,11 +36,12 @@ var WordSchema = new mongoose.Schema({
 });
 
 var BoardSchema = new mongoose.Schema({
+     boardid: {type: String},
      writer: {type: String},
-     date: {type: String},
+     date: {type: Date},
      contents: {type: String},
-     good: {type: Number}
-     
+     good: {type: Number},
+	 bad: {type: Number}
 });
 
 Users = mongoose.model('users', UserSchema);
