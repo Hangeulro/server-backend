@@ -75,7 +75,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
     
     HTTP 300 : already exists
 
-    HTTP 401 : Bad Request
+    HTTP 400 : DB Error
 
 * POST /word
 
@@ -145,5 +145,4 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 > good :  [Number]
 
 > bad : [Number]
-
 
