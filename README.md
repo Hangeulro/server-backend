@@ -114,18 +114,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > mydic : User's Custom dictionary [Array]
 >>> dicname: dictionary list [String]
->>> favorite: contents list (word's id list) [number Array] 
-
->> Array Contains ONLY food's id
-  
-> exception: 
-
->> religion : User's Religion Exception Code [Number Array]
-    
->> allergy : User's Allergic Exception Code [Number Array]
-    
->> custom : User's Custom Exception [String Array]
-
+>>> favorite: contents list (Array Contains ONLY word's id) [number Array] 
 
 ### Word
 
@@ -142,4 +131,18 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 > cata : category [String Array]
 
 > tag : tag of Word [String Array]
+
+
+### board
+
+> boardid: boardid [maybe String]
+
+> writer: boardWriter [String]
+
+> date : boardWriteDate [Date]
+
+> good :  [Number]
+
+> bad : [Number]
+
 
