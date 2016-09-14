@@ -31,11 +31,13 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     userid : User's ID [String]
 
-    password : User's   Password [String]
+    pw : User's   Password [String]
 
 > Response
 
     HTTP 200 : User
+
+    HTTP 400 : No user 
 
     HTTP 401 : ID / Password Incorrect
 
@@ -62,7 +64,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     userid : User's ID [String]
 
-    password : User's Password [String]
+    pw : User's Password [String]
 
     username : User's Name [String]
 
