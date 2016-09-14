@@ -106,7 +106,9 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > username : User Name [String required]
 
-> apikey : User's ApiKey [String]
+> apikey : User ApiKey [String]
+
+> token : User token [String]
 
 > mydic : User's Custom dictionary [Array]
 >>> dicname: dictionary list [String]
