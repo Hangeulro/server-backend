@@ -8,7 +8,7 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/test');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var auth = require('./routes/auth');
 var word = require('./routes/word');
 
 var app = express();
@@ -16,13 +16,14 @@ var app = express();
 var UserSchema = new mongoose.Schema({
   id:{type: String, required:true, unique:true},
   pw:{type: String, required:true},
+  username: {type: String},
+  apikey: {type: String},
+  token: {type: String},
   mydic:{
     name:{type: String},
     favorite: [Number],
   }
 });
-
-Users = mongoose.model('users', UserSchema);
 
 var WordSchema = new mongoose.Schema({
   	id: {type: Number},
@@ -34,8 +35,17 @@ var WordSchema = new mongoose.Schema({
         tag: [String]
 });
 
-Words = mongoose.model('words', WordSchema);
+var BoardSchema = new mongoose.Schema({
+     writer: {type: String},
+     date: {type: String},
+     contents: {type: String},
+     good: {type: Number}
+     
+});
 
+Users = mongoose.model('users', UserSchema);
+Words = mongoose.model('words', WordSchema);
+Boards = mongoose.model('boards', BoardSchema);
 
 
 // view engine setup
@@ -51,8 +61,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
+app.use('/auth', auth);
 app.use('/word', word);
-app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

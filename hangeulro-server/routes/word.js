@@ -21,7 +21,7 @@ router.post('/find', function(req, res) {
 
   Words.find({}, function(err, result){
       if(err){
-       return res.send(400, "Failed");
+         return res.status(400).send(err);
          throw err;
       }
 
