@@ -29,15 +29,15 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > Params
 
-    id : User's ID [String]
+    userid : User's ID [String]
 
-    pw : User's   Password [String]
+    password : User's   Password [String]
 
 > Response
 
-     HTTP 200 : User
+    HTTP 200 : User
 
-     HTTP 401 : ID / Password Incorrect
+    HTTP 401 : ID / Password Incorrect
 
 * POST /auth/login/auto : Auto Login
 
@@ -46,7 +46,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
     id : User's ID [String]
 
     apikey : if user use fb login or something else will return User's apikey [String] 
-    
+
     token : if user use native login token will return token [String]
 
 > Response
@@ -69,7 +69,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > Response
 
-    HTTP 200 : Success
+    HTTP 200 : User
     
     HTTP 300 : already exists
 
@@ -79,11 +79,9 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > Response
 
-    HTTP 200 : Success
+    HTTP 200 : all word's
 
     HTTP 401 : Bad Request
-
-return all words
 
 * POST /word/find
 
