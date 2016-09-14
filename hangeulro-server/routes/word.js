@@ -42,4 +42,29 @@ router.post('/find', function(req, res) {
 });
 
 
+
+router.post('/cata', function(req, res) {
+  var cata = req.query.cata;
+  var data = [];
+
+  Words.find({}, function(err, result){
+      if(err){
+         return res.status(400).send(err);
+         throw err;
+      }
+
+     for(var i = 0; i<result.length; i++){
+       if(result[i].cata !== null){
+        for(var j = 0; j<result[i].cata.length; j++){
+          if(result[i].cata[j].indexOf(cata) !== -1){
+            data.push(result[i]);
+            }
+          }
+        }
+     }
+
+       return res.status(200).send(data);
+  });
+});
+
 module.exports = router;
