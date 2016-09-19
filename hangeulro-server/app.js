@@ -10,6 +10,7 @@ mongoose.connect('mongodb://localhost:27017/hangul');
 var routes = require('./routes/index');
 var auth = require('./routes/auth');
 var word = require('./routes/word');
+var version = require('./routes/version');
 
 var app = express();
 
@@ -19,17 +20,19 @@ var UserSchema = new mongoose.Schema({
   username: {type: String},
   apikey: {type: String},
   token: {type: String},
+
   mydic:{
-    name:{type: String},
+    name:{type: String, unique:true},
     favorite: [Number],
   }
 });
 
 var WordSchema = new mongoose.Schema({
-  	id: {type: Number},
+  	id: {type: String},
         word: {type: String},
         mean: {type: String},
         ex: {type:String},
+	see: {type: Number},
         similar: [String],
         cata: [String],
         tag: [String]
@@ -64,6 +67,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/auth', auth);
 app.use('/word', word);
+app.use('/version, version);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
