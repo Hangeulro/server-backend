@@ -111,7 +111,7 @@ router.post('/dislike', function(req, res) {
   Boards.findOne({boardid: boardid}, function(err, result) {
    if(result !== null){
       var bad = result.bad;
-      Boards.update({boardid: boardid}, {$set : {bad: ++bad}}, function(err, result){
+      Boards.update({boardid: boardid}, {$set : {bad: --bad}}, function(err, result){
         if(err) return res.status(409).send("DB error");
       });
    }else{
@@ -131,7 +131,7 @@ router.post('/my', function(req, res) {
          if(err) return res.status(409).send("DB Error");
 
          if(result !== null) return res.status(200).send(result);
-         else return res.status(201).send("no write");
+         else return res.status(201).send("ever written");
        });
     }
    });
