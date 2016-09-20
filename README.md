@@ -142,7 +142,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     HTTP 200 : return word [String Json]
 
-    HTTP 409 : DB ERROR
+    HTTP 409 : send reason "already exists" or DB ERROR
 
 * POST /mydic/pop
 
