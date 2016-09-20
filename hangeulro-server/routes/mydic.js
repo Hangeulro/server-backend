@@ -1,12 +1,11 @@
 var express = require('express');
 var router = express.Router();
-var rndString = require("randomstring");
-
 
 router.post('/make', function(req, res, next){
     var dicname = req.body.dicname+"";
+    var sub = req.body.sub+""
     var token = req.body.token+"";
-    
+
      Mydics.findOne({owner: token, dicname: dicname}, function(err, result){
        if(err) return res.status(409).send("DB ERROR");
        console.log(result)
@@ -17,6 +16,7 @@ router.post('/make', function(req, res, next){
          var current = new Mydics({
            owner: token,
            dicname: dicname,
+           sub: sub,
            favorite: []
          });
 
@@ -66,6 +66,17 @@ router.post('/pop', function(req, res, next){
        if(err) err;
        res.status(200).send("success");
     });
+});
+
+router.post('/', function(req, res){
+   var token = req.body.token;
+   Mydics.find({owner: token}, function(err, result){
+       if(result !== null){
+	 return res.status(404).send("No dic");
+       }else{
+         return res.status(200).send(result);
+       }
+   });
 });
 
 module.exports = router;
