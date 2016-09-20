@@ -137,7 +137,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     dicname: mydic name  [String]
 
-    id: add id [String]
+    id: add word id [String]
 > Response
 
     HTTP 200 : return word [String Json]
@@ -152,7 +152,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     dicname: mydic name  [String]
 
-    id: pop id [String]
+    id: pop word id [String]
 
 > Response
 
