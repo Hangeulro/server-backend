@@ -5,12 +5,13 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/hangul');
+mongoose.connect('mongodb://localhost:27017/test');
 
 var routes = require('./routes/index');
 var auth = require('./routes/auth');
 var word = require('./routes/word');
 var version = require('./routes/version');
+var mydic = require('./routes/mydic');
 
 var app = express();
 
@@ -19,12 +20,7 @@ var UserSchema = new mongoose.Schema({
   pw:{type: String, required:true},
   username: {type: String},
   apikey: {type: String},
-  token: {type: String},
-
-  mydic:{
-    name:{type: String, unique:true},
-    favorite: [Number],
-  }
+  token: {type: String}
 });
 
 var WordSchema = new mongoose.Schema({
@@ -44,12 +40,19 @@ var BoardSchema = new mongoose.Schema({
      date: {type: Date},
      contents: {type: String},
      good: {type: Number},
-	 bad: {type: Number}
+     bad: {type: Number}
+});
+
+var MydicSchema = new mongoose.Schema({
+    owner: {type: String},
+    dicname: {type: String},
+    favorite: [String]
 });
 
 Users = mongoose.model('users', UserSchema);
 Words = mongoose.model('words', WordSchema);
 Boards = mongoose.model('boards', BoardSchema);
+Mydics = mongoose.model('mydics', MydicSchema);
 
 
 // view engine setup
@@ -67,7 +70,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/auth', auth);
 app.use('/word', word);
-app.use('/version, version);
+app.use('/version', version);
+app.use('/mydic', mydic);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

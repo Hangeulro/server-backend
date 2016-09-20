@@ -8,10 +8,8 @@
 * Server Backend Developer [Younjune Kim](https://github.com/iwin2471)
 * Service Planner / DB Manager [Changhyeon Nam]()
 
-
 # Hangeulro-server
 hangeulro Project (smarteen app challenge 2016) Node.JS Backend
-
 
 ## API Document
 
@@ -72,10 +70,10 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 > Response
 
     HTTP 200 : User
-    
+
     HTTP 300 : already exists
 
-    HTTP 401 : Bad Request
+    HTTP 400 : DB Error
 
 * POST /word
 
@@ -97,6 +95,70 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     HTTP 401 : No word Found
 
+* POST /word/cata
+
+> Params
+
+    cata : word catalog  [String]
+
+> Response
+
+    HTTP 200 : return word [String Json]
+
+    HTTP 401 : No word Found
+
+* GET /version
+
+> Response
+
+    HTTP 200 : return version [String]
+
+
+* POST /mydic/make
+
+> Params
+
+    token: mydic owner token  [String]
+
+    dicname: mydic name  [String]
+
+> Response
+
+    HTTP 200 : return word [String Json]
+
+    HTTP 409 : DB ERROR
+    
+
+* POST /mydic/add
+
+> Params
+
+    token: mydic token  [String]
+
+    dicname: mydic name  [String]
+
+    id: add word id [String]
+> Response
+
+    HTTP 200 : return word [String Json]
+
+    HTTP 409 : DB ERROR
+
+* POST /mydic/pop
+
+> Params
+
+    token: mydic owner token  [String]
+
+    dicname: mydic name  [String]
+
+    id: pop word id [String]
+
+> Response
+
+    HTTP 200 : return word [String Json]
+
+    HTTP 409 : DB ERROR
 
 ## Database Schema
 
@@ -129,7 +191,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > similar : similar Word [String Array]
 
-> cata : category [String Array]
+> cata : catalog [String Array]
 
 > tag : tag of Word [String Array]
 
@@ -146,4 +208,10 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > bad : [Number]
 
+### mydic
 
+> dicname: {type: String}
+
+> favorite: [String array]
+
+> owner: {type: String}

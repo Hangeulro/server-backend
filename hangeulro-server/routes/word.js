@@ -53,16 +53,18 @@ router.post('/cata', function(req, res) {
       }
 
      for(var i = 0; i<result.length; i++){
-       if(result[i].cata !== null){
+       if(result[i].cata == null && cata === '일'){
+          data.push(result[i]);
+       }else{
         for(var j = 0; j<result[i].cata.length; j++){
-          if(result[i].cata[j].indexOf(cata) !== -1){
-            data.push(result[i]);
-            }
-          }
-        }
+         if(result[i].cata[j].indexOf(cata) !== -1){
+           data.push(result[i]);
+         }
+       }
+      }
      }
 
-       return res.status(200).send(data);
+      return res.status(200).send(data);
   });
 });
 
