@@ -8,13 +8,13 @@ router.get('/', function(req, res, next) {
 
 
 router.post('/register', function(req, res, next){
-   if(req.query.userid === undefined || req.query.pw === undefined || req.query.username === undefined || req.query.userid === '' || req.query.pw === '' ||  req.query.username === ''){
+   if(req.body.userid === undefined || req.body.pw === undefined || req.body.username === undefined || req.body.userid === '' || req.body.pw === '' ||  req.body.username === ''){
       return res.status(403).send("Params Missing");
    }else{
       var current = new Users({
-                userid: req.query.userid,
-                pw: req.query.pw,
-                username: req.query.username,
+                userid: req.body.userid,
+                pw: req.body.pw,
+                username: req.body.username,
 	        token: rndString.generate()
       });
       current.save(function(err, data) {
@@ -33,9 +33,9 @@ router.post('/register', function(req, res, next){
 
 
 router.post('/login', function(req, res, next){
-   Users.findOne({userid: req.query.userid}, function (err, user){
+   Users.findOne({userid: req.body.userid}, function (err, user){
      if(user != null){
-       if(user.userid === req.query.userid && user.pw === req.query.pw){
+       if(user.userid === req.body.userid && user.pw === req.body.pw){
          var obj = {
    	      "userid": user.userid, 
           "token": user.token
@@ -52,7 +52,7 @@ router.post('/login', function(req, res, next){
 });
 
 router.post('/auto', function(req, res, next){
-	Users.findOne({token: req.query.token}, function (err, resul){
+	Users.findOne({token: req.body.token}, function (err, resul){
 	  if(resul != null){
 	     var obj = {
 	         "userid": resul.userid,
@@ -64,5 +64,4 @@ router.post('/auto', function(req, res, next){
 	  }
 	});
 });
-
 module.exports = router;

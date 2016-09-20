@@ -15,7 +15,7 @@ router.post('/', function(req, res) {
 
 
 router.post('/find', function(req, res) {
-  var sh = req.query.search;
+  var sh = req.body.search;
   var data = [];
      console.log(sh);
 
@@ -42,9 +42,8 @@ router.post('/find', function(req, res) {
 });
 
 
-
 router.post('/cata', function(req, res) {
-  var cata = req.query.cata;
+  var cata = req.body.cata;
   var data = [];
 
   Words.find({}, function(err, result){
@@ -54,17 +53,40 @@ router.post('/cata', function(req, res) {
       }
 
      for(var i = 0; i<result.length; i++){
-       if(result[i].cata !== null){
+       if(result[i].cata == null && cata === '일'){
+          data.push(result[i]);
+       }else{
         for(var j = 0; j<result[i].cata.length; j++){
-          if(result[i].cata[j].indexOf(cata) !== -1){
-            data.push(result[i]);
-            }
-          }
-        }
+         if(result[i].cata[j].indexOf(cata) !== -1){
+           data.push(result[i]);
+         }
+       }
+      }
      }
 
-       return res.status(200).send(data);
+      return res.status(200).send(data);
   });
+});
+
+router.post('/getWordInfo', function(req, res){
+  var wordId = req.body.wordid  
+
+  Words.findOne({'id': wordId}, function (err, result) {
+   if (err) return err;
+   if(result.see === undefined){
+       Words.update({id: result.id+""}, {$set : {see: 1}}, function(err, result){
+            if(err) err;
+       });
+            return res.status(200).send(result);
+    }else{
+        var up = result.see;
+        up++;
+        Words.update({id: result.id+""}, {$set : {see: up}}, function(err, result){
+            if(err) err;
+        });
+            return res.status(200).send(result);
+    }
+  })  
 });
 
 module.exports = router;
