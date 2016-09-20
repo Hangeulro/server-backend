@@ -23,6 +23,7 @@ var UserSchema = new mongoose.Schema({
   token: {type: String}
 });
 
+
 var WordSchema = new mongoose.Schema({
   	id: {type: String},
         word: {type: String},
@@ -34,26 +35,34 @@ var WordSchema = new mongoose.Schema({
         tag: [String]
 });
 
-var BoardSchema = new mongoose.Schema({
-     boardid: {type: String},
-     writer: {type: String},
-     date: {type: Date},
-     contents: {type: String},
-     good: {type: Number},
-     bad: {type: Number}
-});
-
 var MydicSchema = new mongoose.Schema({
     owner: {type: String},
     dicname: {type: String},
     favorite: [String]
 });
 
+
+var BoardSchema = new mongoose.Schema({
+     boardid: {type: String},
+     writer: {type: String},
+     date: {type: Date},
+     contents: {type: String},
+     good: {type: Number},
+     bad: {type: Number},
+     share: {type: Number}
+});
+
+var CommentSchema = new mongoose.Schema({
+    writer: {type: String},
+    boardid: {type: String},
+    summary: {type: String}
+});
+
 Users = mongoose.model('users', UserSchema);
 Words = mongoose.model('words', WordSchema);
 Boards = mongoose.model('boards', BoardSchema);
 Mydics = mongoose.model('mydics', MydicSchema);
-
+Comments = mongoose.model('comments', CommentSchema);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
