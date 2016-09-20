@@ -53,8 +53,8 @@ var BoardSchema = new mongoose.Schema({
      date: {type: String},
      contents: {type: String},
      imageurl: {type: String},
-     good: {type: Number},
-     bad: {type: Number},
+     good: {type: Number, default: 0},
+     bad: {type: Number, default: 0},
      share: {type: Number}
 });
 

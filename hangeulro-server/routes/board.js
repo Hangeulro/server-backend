@@ -80,7 +80,7 @@ router.post('/commentAdd', function(req, res){
           boardid: boardid,
           writer: result.username,
           date: date,
-          summary: contents,
+          summary: summary,
       });
 
       current.save(function(err, data) {
@@ -91,15 +91,50 @@ router.post('/commentAdd', function(req, res){
 });
 
 router.post('/like', function(req, res) {
-   var token;
+   var boardid = req.body.boardid;
+
+   Boards.findOne({boardid: boardid}, function(err, result) {
+     if(result !== null){
+       var good = result.good;
+       Boards.update({boardid: boardid}, {$set : {good: ++good}}, function(err, result){
+         if(err) return res.status(409).send("DB error");
+       });
+    }else{
+      return res.status(409).send("board not found");
+    }
+  });
 });
 
 router.post('/dislike', function(req, res) {
+  var boardid = req.body.boardid;
 
+  Boards.findOne({boardid: boardid}, function(err, result) {
+   if(result !== null){
+      var bad = result.bad;
+      Boards.update({boardid: boardid}, {$set : {bad: ++bad}}, function(err, result){
+        if(err) return res.status(409).send("DB error");
+      });
+   }else{
+     return res.status(409).send("board not found");
+   }
+ });
 });
 
 router.post('/my', function(req, res) {
-   Boards.find()
+   var token = req.body.token;
+
+   Users.findOne({token: token}, function(err, result) {
+     if(err) return res.status(409).send("DB Error");
+
+     if(result !== null){
+       Boards.find({writer: result.username}, function(err, result){
+         if(err) return res.status(409).send("DB Error");
+
+         if(result !== null) return res.status(200).send(result);
+         else return res.status(201).send("no write");
+       });
+    }
+   });
 });
 
 module.exports = router;
