@@ -55,7 +55,7 @@ router.post('/cata', function(req, res) {
      for(var i = 0; i<result.length; i++){
        if(result[i].cata == null && cata === '일'){
           data.push(result[i]);
-       }else{
+       }else if(result[i].cata !==null){
         for(var j = 0; j<result[i].cata.length; j++){
          if(result[i].cata[j].indexOf(cata) !== -1){
            data.push(result[i]);
@@ -69,7 +69,7 @@ router.post('/cata', function(req, res) {
 });
 
 router.post('/getWordInfo', function(req, res){
-  var wordId = req.body.wordid  
+  var wordId = req.body.wordid
 
   Words.findOne({'id': wordId}, function (err, result) {
    if (err) return err;
@@ -86,7 +86,7 @@ router.post('/getWordInfo', function(req, res){
         });
             return res.status(200).send(result);
     }
-  })  
+  })
 });
 
 module.exports = router;

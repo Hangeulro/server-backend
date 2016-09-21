@@ -5,13 +5,15 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/test');
+mongoose.connect('mongodb://localhost:27017/hangul');
 
 var routes = require('./routes/index');
 var auth = require('./routes/auth');
 var word = require('./routes/word');
 var version = require('./routes/version');
 var mydic = require('./routes/mydic');
+var board = require('./routes/board');
+var image = require('./routes/image');
 
 var app = express();
 
@@ -23,37 +25,51 @@ var UserSchema = new mongoose.Schema({
   token: {type: String}
 });
 
-var WordSchema = new mongoose.Schema({
-  	id: {type: String},
-        word: {type: String},
-        mean: {type: String},
-        ex: {type:String},
-	see: {type: Number},
-        similar: [String],
-        cata: [String],
-        tag: [String]
-});
 
-var BoardSchema = new mongoose.Schema({
-     boardid: {type: String},
-     writer: {type: String},
-     date: {type: Date},
-     contents: {type: String},
-     good: {type: Number},
-     bad: {type: Number}
+var WordSchema = new mongoose.Schema({
+  id: {type: String},
+  word: {type: String},
+  mean: {type: String},
+  ex: {type:String},
+  see: {type: Number},
+  similar: [String],
+  cata: [String],
+  tag: [String]
 });
 
 var MydicSchema = new mongoose.Schema({
     owner: {type: String},
     dicname: {type: String},
+    sub: {type: String},
     favorite: [String]
+});
+
+
+var BoardSchema = new mongoose.Schema({
+     boardid: {type: String},
+     title: {type: String},
+     writer: {type: String},
+     writerToken: {type: String},
+     date: {type: String},
+     contents: {type: String},
+     imageurl: {type: String},
+     good: {type: Number, default: 0},
+     bad: {type: Number, default: 0},
+     share: {type: Number}
+});
+
+var CommentSchema = new mongoose.Schema({
+    writer: {type: String},
+    boardid: {type: String},
+    date: {type: String},
+    summary: {type: String}
 });
 
 Users = mongoose.model('users', UserSchema);
 Words = mongoose.model('words', WordSchema);
 Boards = mongoose.model('boards', BoardSchema);
 Mydics = mongoose.model('mydics', MydicSchema);
-
+Comments = mongoose.model('comments', CommentSchema);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -72,6 +88,8 @@ app.use('/auth', auth);
 app.use('/word', word);
 app.use('/version', version);
 app.use('/mydic', mydic);
+app.use('/board', board);
+app.use('/image', image);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
