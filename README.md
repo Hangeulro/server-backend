@@ -223,7 +223,19 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
     HTTP 400 : not vaild token
 
     HTTP 409 : send reason "already exists" or DB ERROR
+    
+* POST /board/detail
 
+> Params
+
+  boardid: boardid [String]
+
+> Response
+
+    HTTP 200 : return board detail
+
+    HTTP 400 : not vaild id
+    
 ## Database Schema
 
 ### User
