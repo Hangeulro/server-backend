@@ -64,6 +64,8 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     pw : User's Password [String]
 
+    username : User's Name [String]
+
 
 > Response
 
@@ -256,8 +258,6 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > pw : User's Password [String required]
 
-> username : User Name [String required]
-
 > apikey : User ApiKey [String]
 
 > token : User token [String]
@@ -289,7 +289,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 > boardid: boardid [String]
 
 > writer: boardWriter [String]
-ß
+
 > writerToken: writerToken [String]
 
 > imageurl: boardimageurl [String]
