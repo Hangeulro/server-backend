@@ -106,6 +106,20 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
     HTTP 200 : return word [String Json]
 
     HTTP 401 : No word Found
+ 
+    
+* POST /word/getWordInfo
+
+> Params
+
+    wordid : word id to get word Info  [String]
+
+> Response
+
+    HTTP 200 : return word Info [String Json]
+
+    HTTP 401 : No word Found
+
 
 * GET /version
 
