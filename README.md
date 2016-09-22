@@ -64,8 +64,6 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     pw : User's Password [String]
 
-    username : User's Name [String]
-
 
 > Response
 
