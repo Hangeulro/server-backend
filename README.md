@@ -344,4 +344,3 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 > boardid: {type: String}
 
 > summary: {type: String}
-
