@@ -71,7 +71,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     HTTP 400 : DB Error
     
-* POST /auth/fb/token : send 
+* GET /auth/fb/token : send 
 
 > Params
 
@@ -84,7 +84,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     HTTP 400 : DB Error
     
-* POST /auth/tw/token : send tw token 
+* GET /auth/tw/token : send tw token 
 
 > Params
 
