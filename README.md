@@ -74,6 +74,32 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
     HTTP 300 : already exists
 
     HTTP 400 : DB Error
+    
+* POST /auth/fb/token : send 
+
+> Params
+
+    access_token : access token
+
+
+> Response
+
+    HTTP 200 : send user
+
+    HTTP 400 : DB Error
+    
+* POST /auth/tw/token : send tw token 
+
+> Params
+
+    oauth_token : oauth_token
+
+
+> Response
+
+    HTTP 200 : send user
+
+    HTTP 400 : DB Error 
 
 * POST /word
 
