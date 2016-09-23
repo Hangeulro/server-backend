@@ -2,13 +2,10 @@ var express = require('express');
 var router = express.Router();
 var upload = require('./module/upload');
 var rndString = require("randomstring");
-
-router.get('/', function(req, res) {
-    res.send("nope");
-});
+var gm = require('gm');
 
 router.post('/', function(req, res) {
-    Comments.find({}, function(err, result) {
+    Boards.find({}, function(err, result) {
         if (err) return res.status(409).send("DB error")
         return res.status(200).send(result);
     });
@@ -27,17 +24,22 @@ router.post('/write', function(req, res) {
         if (err) return res.status(409).send("DB error");
         else if(result == null) return res.status(400).send("not valid token");
 
-
         if(req.file != undefined){
           upload.upload(req, res, boardid).then(function(file) {
+            var image = "upload/"+file.name+"."+file.ext;
+
+            gm(image).resize(300, 300).write(image, function (err) {
+              if (err) console.error(err);
+              else console.log('done');
+            });
                   var current = new Boards({
                       boardid: boardid,
                       title: title,
-                      writer: result.username,
+                      writer: result.name,
                       writerToken: token,
                       date: Date,
                       contents: contents,
-                      imageurl: "http://iwin247.net/image/"+file.name+"."+file.ext
+                      imageurl: "http://iwin247.net/image/"+image
                   });
 
                   current.save(function(err, data) {
@@ -52,7 +54,7 @@ router.post('/write', function(req, res) {
         var current = new Boards({
             boardid: boardid,
             title: title,
-            writer: result.username,
+            writer: name,
             writerToken: token,
             date: Date,
             contents: contents,
@@ -72,20 +74,16 @@ router.post('/commentAdd', function(req, res){
   var summary = req.body.summary;
   var date = req.body.date;
 
-  Users.findOne({token: token}, function(err, result) {
+  Users.findOne({token: token}, function(err, user) {
       if (err) return res.status(409).send("DB error");
       else if(result == null) return res.status(400).send("not valid token");
-
-      var current = new Comments({
-          boardid: boardid,
-          writer: result.username,
-          date: date,
-          summary: summary,
-      });
-
-      current.save(function(err, data) {
-          if (err) return res.status(409).send("DB error");
-          return res.status(200).send("success");
+      Boards.update({boardid : id}, {$push : {comments : {writer: user.name, date: date, summary: summary}}}, function(err, result){
+          if(err) return res.status(409).send("DB Error");
+          if(result.ok > 0){
+            res.status(403).send("success");
+          }else{
+            res.status(300).send("nothing chenged");
+          }
       });
   });
 });
@@ -120,6 +118,17 @@ router.post('/dislike', function(req, res) {
  });
 });
 
+router.post('/detail', function(req, res){
+   var boardid = req.body.boardid;
+
+   Boards.findOne({boardid: boardid}, {_id:0, writerToken:0}, function(err, result){
+     if(err) return res.status(409).send("DB Error");
+     if(result){
+       return res.status(200).send(result);
+     }
+   });
+});
+
 router.post('/my', function(req, res) {
    var token = req.body.token;
 
@@ -127,7 +136,7 @@ router.post('/my', function(req, res) {
      if(err) return res.status(409).send("DB Error");
 
      if(result !== null){
-       Boards.find({writer: result.username}, function(err, result){
+       Boards.find({writer: result.name}, function(err, result){
          if(err) return res.status(409).send("DB Error");
 
          if(result !== null) return res.status(200).send(result);
