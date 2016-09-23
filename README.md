@@ -89,7 +89,10 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 > Params
 
     oauth_token : oauth_token
-
+    
+    oauth_token_secret: oauth_token_secret
+    
+    user_id: user_id
 
 > Response
 
