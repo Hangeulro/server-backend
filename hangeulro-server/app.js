@@ -13,16 +13,20 @@ var word = require('./routes/word');
 var version = require('./routes/version');
 var mydic = require('./routes/mydic');
 var board = require('./routes/board');
+var quize = require('./routes/quize');
 var image = require('./routes/image');
 
 var app = express();
 
 var UserSchema = new mongoose.Schema({
   userid:{type: String, required:true, unique:true},
-  pw:{type: String, required:true},
-  username: {type: String},
-  apikey: {type: String},
-  token: {type: String}
+  pw:{type: String},
+  name: {type: String},
+  profile_image: {type: String},
+  api_id: {type: String},
+  token: {type: String},
+  level: {type: Number},
+  point: {type: Number}
 });
 
 
@@ -34,7 +38,13 @@ var WordSchema = new mongoose.Schema({
   see: {type: Number},
   similar: [String],
   cata: [String],
-  tag: [String]
+  tag: [String],
+
+  comments: [{
+    writer: {type: String},
+    date: {type: String},
+    summary: {type: String}
+  }]
 });
 
 var MydicSchema = new mongoose.Schema({
@@ -55,21 +65,20 @@ var BoardSchema = new mongoose.Schema({
      imageurl: {type: String},
      good: {type: Number, default: 0},
      bad: {type: Number, default: 0},
-     share: {type: Number}
-});
+     share: {type: Number, default: 0},
 
-var CommentSchema = new mongoose.Schema({
-    writer: {type: String},
-    boardid: {type: String},
-    date: {type: String},
-    summary: {type: String}
+     comments:[{
+       writer: {type: String},
+       date: {type: String},
+       summary: {type: String}
+     }]
 });
 
 Users = mongoose.model('users', UserSchema);
 Words = mongoose.model('words', WordSchema);
 Boards = mongoose.model('boards', BoardSchema);
 Mydics = mongoose.model('mydics', MydicSchema);
-Comments = mongoose.model('comments', CommentSchema);
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -90,6 +99,7 @@ app.use('/version', version);
 app.use('/mydic', mydic);
 app.use('/board', board);
 app.use('/image', image);
+app.use('/quize', quize);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

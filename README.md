@@ -35,7 +35,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     HTTP 200 : User
 
-    HTTP 400 : No user 
+    HTTP 400 : No user
 
     HTTP 401 : ID / Password Incorrect
 
@@ -43,11 +43,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > Params
 
-    id : User's ID [String]
-
-    apikey : if user use fb login or something else will return User's apikey [String] 
-
-    token : if user use native login token will return token [String]
+    token : token [String]
 
 > Response
 
@@ -74,6 +70,35 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
     HTTP 300 : already exists
 
     HTTP 400 : DB Error
+    
+* GET /auth/fb/token : send 
+
+> Params
+
+    access_token : access token
+
+
+> Response
+
+    HTTP 200 : send user
+
+    HTTP 400 : DB Error
+    
+* GET /auth/tw/token : send tw token 
+
+> Params
+
+    oauth_token : oauth_token
+    
+    oauth_token_secret: oauth_token_secret
+    
+    user_id: user_id
+
+> Response
+
+    HTTP 200 : send user
+
+    HTTP 400 : DB Error 
 
 * POST /word
 
@@ -106,6 +131,20 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
     HTTP 200 : return word [String Json]
 
     HTTP 401 : No word Found
+ 
+    
+* POST /word/getWordInfo
+
+> Params
+
+    wordid : word id to get word Info  [String]
+
+> Response
+
+    HTTP 200 : return word Info [String Json]
+
+    HTTP 401 : No word Found
+
 
 * GET /version
 
@@ -114,20 +153,33 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
     HTTP 200 : return version [String]
 
 
+* POST /mydic
+    > Params
+
+        token: mydic owner token  [String]
+
+    > Response
+
+        HTTP 200 : return mydic list [String array]
+
+        HTTP 409 : send reason "already exists" or DB ERROR
+
 * POST /mydic/make
 
 > Params
 
     token: mydic owner token  [String]
 
+    sub: mydic sub title [String]
+
     dicname: mydic name  [String]
 
 > Response
 
-    HTTP 200 : return word [String Json]
+    HTTP 200 : Success
 
     HTTP 409 : DB ERROR
-    
+
 
 * POST /mydic/add
 
@@ -138,9 +190,10 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
     dicname: mydic name  [String]
 
     id: add word id [String]
+
 > Response
 
-    HTTP 200 : return word [String Json]
+    HTTP 200 : return word list [String array]
 
     HTTP 409 : send reason "already exists" or DB ERROR
 
@@ -156,10 +209,72 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > Response
 
-    HTTP 200 : return word [String Json]
+    HTTP 200 : return word list [String array]
 
-    HTTP 409 : DB ERROR
+    HTTP 409 : send reason "already exists" or DB ERROR
 
+
+* POST /board
+
+> Response
+
+    HTTP 200 : return board json
+
+
+* POST /board/write
+
+
+> Params
+
+        file: if user upload image use key file
+
+        token: mydic owner token  [String]
+
+        date: mydic name  [String]
+
+        title: title name [String]
+
+        contnets: contnets [String]
+
+> Response
+
+        HTTP 200 : return Success
+
+        HTTP 409 : send reason "already exists" or DB ERROR
+
+
+* POST /board/commentAdd
+
+> Params
+
+  token: mydic owner token  [String]
+
+  boardid: boardid [String]
+
+  summary: board summary [String]
+
+  date: write date [String]
+
+> Response
+
+    HTTP 200 : return Success
+
+    HTTP 400 : not vaild token
+
+    HTTP 409 : send reason "already exists" or DB ERROR
+    
+* POST /board/detail
+
+> Params
+
+  boardid: boardid [String]
+
+> Response
+
+    HTTP 200 : return board detail
+
+    HTTP 400 : not vaild id
+    
 ## Database Schema
 
 ### User
@@ -168,20 +283,18 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > pw : User's Password [String required]
 
-> username : User Name [String required]
-
 > apikey : User ApiKey [String]
 
 > token : User token [String]
 
 > mydic : User's Custom dictionary [Array]
 >> dicname: dictionary list [String]
->> favorite: contents list [number Array] 
+>> favorite: contents list [number Array]
 > (Array Contains ONLY word's id)
 
 ### Word
 
-> id: word's ID [Number]
+> id: word's ID [String]
 
 > word : this Word [String]
 
@@ -198,9 +311,13 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 ### board
 
-> boardid: boardid [maybe String]
+> boardid: boardid [String]
 
 > writer: boardWriter [String]
+
+> writerToken: writerToken [String]
+
+> imageurl: boardimageurl [String]
 
 > date : boardWriteDate [Date]
 
@@ -212,7 +329,19 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > dicname: {type: String}
 
+> sub: {type: String}
+
 > favorite: [String array]
 
 > owner: {type: String}
+
+### comment
+
+> writer: {type: String}
+
+> writerToken: {type: String}
+
+> boardid: {type: String}
+
+> summary: {type: String}
 

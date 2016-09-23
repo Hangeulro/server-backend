@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+//require(module/oauth');
 
 router.post('/make', function(req, res, next){
     var dicname = req.body.dicname+"";

@@ -1,11 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
-
-
 router.post('/', function(req, res) {
   Words.find({}, function(err, word) {
       if(err) err;
@@ -17,7 +12,6 @@ router.post('/', function(req, res) {
 router.post('/find', function(req, res) {
   var sh = req.body.search;
   var data = [];
-     console.log(sh);
 
   Words.find({}, function(err, result){
       if(err){
@@ -25,15 +19,15 @@ router.post('/find', function(req, res) {
          throw err;
       }
 
-     for(var i =0; i<result.length; i++){
+     for(var i = 0; i<result.length; i++){
        if (result[i].word.indexOf(sh) !== -1) {
           data.push(result[i]);
        }else if(result[i].similar !== null){
         for(var j = 0; j<result[i].similar.length; j++){
-          if(result[i].similar[j].indexOf(sh) !== -1){
-            data.push(result[i]);
-          }
-	}
+            if(result[i].similar[j].indexOf(sh) !== -1){
+              data.push(result[i]);
+            }
+	       }
        }
     }
 
@@ -55,7 +49,7 @@ router.post('/cata', function(req, res) {
      for(var i = 0; i<result.length; i++){
        if(result[i].cata == null && cata === '일'){
           data.push(result[i]);
-       }else if(result[i].cata !==null){
+       }else if(result[i].cata !== null){
         for(var j = 0; j<result[i].cata.length; j++){
          if(result[i].cata[j].indexOf(cata) !== -1){
            data.push(result[i]);
@@ -68,25 +62,49 @@ router.post('/cata', function(req, res) {
   });
 });
 
-router.post('/getWordInfo', function(req, res){
-  var wordId = req.body.wordid
+router.post('/commentADD', function(req, res){
+  var token = req.body.token;
+  var date = req.body.date+"";
+  var id = req.body.wordid+"";
+  var summary = req.body.summary+"";
+  Users.findOne({token: token}, function(err, user){
+    if(err) return res.status(404).send("404 user not found");
+    Words.update({id : id}, {$push : {comments : {writer: user.name, date: date, summary: summary}}}, function(err, result){
+        if(err) return res.status(409).send("DB Error");
+        if(result.ok > 0){
+          console.log(result);
+          res.status(200).send("su");
+        }else{
+          res.status(300).send("nothing chenged");
+        }
+    });
+  });
+})
 
-  Words.findOne({'id': wordId}, function (err, result) {
-   if (err) return err;
-   if(result.see === undefined){
-       Words.update({id: result.id+""}, {$set : {see: 1}}, function(err, result){
-            if(err) err;
-       });
-            return res.status(200).send(result);
-    }else{
+router.post('/getWordInfo', function(req, res){
+  var wordId = req.body.wordid+"";
+  var data;
+
+  Words.findOne({id: wordId}, function (err, result) {
+
+    if (err) return err;
+    if(result){
         var up = result.see;
+        var id = result.id+"";
         up++;
-        Words.update({id: result.id+""}, {$set : {see: up}}, function(err, result){
+
+        Words.update({id: id}, {$set : {see: up}}, function(err, word){
             if(err) err;
         });
-            return res.status(200).send(result);
+
+        Words.find({id: id}, function(err, result){
+          if(err) err;
+          return res.status(200).send(result);
+        });
+
     }
-  })
+
+  });
 });
 
 module.exports = router;
