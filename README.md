@@ -43,11 +43,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > Params
 
-    id : User's ID [String]
-
-    apikey : if user use fb login or something else will return User's apikey [String]
-
-    token : if user use native login token will return token [String]
+    token : token [String]
 
 > Response
 
