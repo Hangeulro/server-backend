@@ -284,8 +284,6 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 > Response
 
     HTTP 200 : return random word
-
-    HTTP 400 : not vaild id
     
 ## Database Schema
 
