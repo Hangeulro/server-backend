@@ -303,7 +303,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     HTTP 400 : not vaild id
     
-* GET /quize
+* POST /quize
 
 > Params
 
