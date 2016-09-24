@@ -298,6 +298,50 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 > Response
 
     HTTP 200 : return random word
+
+
+* POST /my
+
+> Params
+
+  token: user token
+
+> Response
+
+    HTTP 200: return user data
+    
+    HTTP 401: user not found
+    
+    HTTP 409: DB ERROR
+    
+* POST /my/pointUp
+
+> Params
+
+  token: user token
+  pointUp: pointUp
+
+> Response
+
+    HTTP 200: return user data
+    
+    HTTP 401: user not found
+    
+    HTTP 409: DB ERROR
+    
+* POST /my/board
+
+> Params
+
+  token: user token
+
+> Response
+
+    HTTP 200: return writed board
+    
+    HTTP 401: user not found
+    
+    HTTP 409: DB ERROR
     
 ## Database Schema
 
