@@ -275,6 +275,16 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     HTTP 400 : not vaild id
     
+* GET /quize
+
+> Params
+
+  nope
+
+> Response
+
+    HTTP 200 : return random word
+    
 ## Database Schema
 
 ### User
@@ -334,14 +344,3 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 > favorite: [String array]
 
 > owner: {type: String}
-
-### comment
-
-> writer: {type: String}
-
-> writerToken: {type: String}
-
-> boardid: {type: String}
-
-> summary: {type: String}
-

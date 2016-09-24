@@ -5,7 +5,7 @@ router.get('/', function(req, res){
   var quize = [];
   var aryQuize = [];
   var idx = 0;
-  var data = "";
+  var data = [];
 
    //46 숫자 저장
    for (var i = 1; i < 999; i++){
@@ -18,16 +18,16 @@ router.get('/', function(req, res){
        aryQuize.splice(idx,1);
    }
 
-   for(var i = 0; i<quize.length; i++){
-     Words.findOne({id: quize[i]+""}, function(err, result){
+     Words.find({}, function(err, result){
         if(err) err;
 
         if(result){
-          data += result;
+          for(var i = 0; i<quize.length; i++){
+            data.push(result[quize[i]]);
+          }
+          return res.status(200).send(data);
         }
      });
-     console.log(data);
-   }
 });
 
 
