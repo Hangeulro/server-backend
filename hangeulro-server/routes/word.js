@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 router.post('/', function(req, res) {
-  Words.find({}, function(err, word) {
+    Words.find({$query: {}, $orderby: { see : 1 }}, function(err, word) {
       if(err) err;
       return res.status(200).send(word);
   });
@@ -13,7 +13,7 @@ router.post('/find', function(req, res) {
   var sh = req.body.search;
   var data = [];
 
-  Words.find({}, function(err, result){
+    Words.find({$query: {}, $orderby: { see : 1 }}, function(err, result){
       if(err){
          return res.status(400).send(err);
          throw err;
@@ -40,7 +40,7 @@ router.post('/cata', function(req, res) {
   var cata = req.body.cata;
   var data = [];
 
-  Words.find({}, function(err, result){
+  Words.find({$query: {}, $orderby: { see : 1 }} , function(err, result){
       if(err){
          return res.status(400).send(err);
          throw err;
@@ -62,7 +62,7 @@ router.post('/cata', function(req, res) {
   });
 });
 
-router.post('/commentADD', function(req, res){
+router.post('/commentAdd', function(req, res){
   var token = req.body.token;
   var date = req.body.date+"";
   var id = req.body.wordid+"";
