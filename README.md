@@ -39,7 +39,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     HTTP 401 : ID / Password Incorrect
 
-* POST /auth/login/auto : Auto Login
+* POST /auth/auto : Auto Login
 
 > Params
 
