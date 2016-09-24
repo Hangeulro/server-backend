@@ -70,8 +70,22 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
     HTTP 300 : already exists
 
     HTTP 400 : DB Error
+
+* POST /auth/destroy
+
+> Params
+
+    token : token [String]
+
+> Response
+
+    HTTP 200 : good bye
+
+    HTTP 401 : not found
     
-* GET /auth/fb/token : send 
+    HTTP 409 : DB ERROR
+    
+* GET /auth/fb/token 
 
 > Params
 
