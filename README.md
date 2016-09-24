@@ -144,7 +144,21 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
     HTTP 200 : return word Info [String Json]
 
     HTTP 401 : No word Found
+    
+* POST /word/commentAdd
 
+> Params
+
+    token : writer token [String]
+    date : write date [String]
+    wordid : wordid to write [String]
+    summary : comment summary [String]
+
+> Response
+
+    HTTP 200 : return word Info [String Json]
+
+    HTTP 401 : No word Found
 
 * GET /version
 
@@ -228,9 +242,9 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
         file: if user upload image use key file
 
-        token: mydic owner token  [String]
+        token: writer token  [String]
 
-        date: mydic name  [String]
+        date: date  [String]
 
         title: title name [String]
 
@@ -247,7 +261,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > Params
 
-  token: mydic owner token  [String]
+  token: writer token  [String]
 
   boardid: boardid [String]
 
@@ -297,12 +311,6 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > token : User token [String]
 
-> comments: [{
-   writer: {type: String},
-   date: {type: String},
-   summary: {type: String}
-  }]
-
 > mydic : User's Custom dictionary [Array]
 >> dicname: dictionary list [String]
 >> favorite: contents list [number Array]
@@ -324,6 +332,11 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > tag : tag of Word [String Array]
 
+> comments: [{
+   writer: {type: String},
+   date: {type: String},
+   summary: {type: String}
+  }]
 
 ### board
 
@@ -340,6 +353,12 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 > good :  [Number]
 
 > bad : [Number]
+
+> comments:[{
+       writer: {type: String},
+       date: {type: String},
+       summary: {type: String}
+     }]
 
 ### mydic
 
