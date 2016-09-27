@@ -15,6 +15,7 @@ var mydic = require('./routes/mydic');
 var board = require('./routes/board');
 var quize = require('./routes/quize');
 var image = require('./routes/image');
+var my = require('./routes/my');
 
 var app = express();
 
@@ -23,10 +24,11 @@ var UserSchema = new mongoose.Schema({
   pw:{type: String},
   name: {type: String},
   profile_image: {type: String},
-  api_id: {type: String},
   token: {type: String},
-  level: {type: Number},
-  point: {type: Number}
+  level: {type: Number, default: 0},
+  total_point: {type: Number, default: 0},
+  max_point: {type: Number, default: 3000},
+  point: {type: Number, default: 0}
 });
 
 
@@ -100,6 +102,7 @@ app.use('/mydic', mydic);
 app.use('/board', board);
 app.use('/image', image);
 app.use('/quize', quize);
+app.use('/my', my);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

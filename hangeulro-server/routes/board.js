@@ -80,7 +80,9 @@ router.post('/commentAdd', function(req, res){
       Boards.update({boardid : id}, {$push : {comments : {writer: user.name, date: date, summary: summary}}}, function(err, result){
           if(err) return res.status(409).send("DB Error");
           if(result.ok > 0){
-            res.status(403).send("success");
+            Boards.findOne({boardid: id}, function(err, boardlist){
+              res.status(200).send(boardlist);
+            });
           }else{
             res.status(300).send("nothing chenged");
           }
@@ -126,23 +128,6 @@ router.post('/detail', function(req, res){
      if(result){
        return res.status(200).send(result);
      }
-   });
-});
-
-router.post('/my', function(req, res) {
-   var token = req.body.token;
-
-   Users.findOne({token: token}, function(err, result) {
-     if(err) return res.status(409).send("DB Error");
-
-     if(result !== null){
-       Boards.find({writer: result.name}, function(err, result){
-         if(err) return res.status(409).send("DB Error");
-
-         if(result !== null) return res.status(200).send(result);
-         else return res.status(201).send("ever written");
-       });
-    }
    });
 });
 

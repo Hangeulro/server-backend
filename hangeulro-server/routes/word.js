@@ -68,12 +68,15 @@ router.post('/commentAdd', function(req, res){
   var id = req.body.wordid+"";
   var summary = req.body.summary+"";
   Users.findOne({token: token}, function(err, user){
-    if(err) return res.status(404).send("404 user not found");
+    if(err) return res.status(401).send("user not found");
+
     Words.update({id : id}, {$push : {comments : {writer: user.name, date: date, summary: summary}}}, function(err, result){
         if(err) return res.status(409).send("DB Error");
+
         if(result.ok > 0){
-          console.log(result);
-          res.status(200).send("su");
+          Words.findOne({id: id}, function(err, word){
+            res.status(200).send(word);
+          });
         }else{
           res.status(300).send("nothing chenged");
         }
