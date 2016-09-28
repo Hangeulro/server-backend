@@ -279,7 +279,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
   boardid: boardid [String]
 
-  summary: board summary [String]
+  comment: board comment [String]
 
   date: write date [String]
 
