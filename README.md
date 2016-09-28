@@ -262,7 +262,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
         title: title name [String]
 
-        contnets: contnets [String]
+        contents: contents [String]
 
 > Response
 
@@ -417,13 +417,3 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
        date: {type: String},
        summary: {type: String}
      }]
-
-### mydic
-
-> dicname: {type: String}
-
-> sub: {type: String}
-
-> favorite: [String array]
-
-> owner: {type: String}
