@@ -417,3 +417,9 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
        date: {type: String},
        summary: {type: String}
      }]
+
+### Mydic
+> owner: {type: String},
+> dicname: {type: String},
+> sub: {type: String},
+> favorite: [String] // array
