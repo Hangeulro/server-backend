@@ -419,7 +419,10 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
      }]
 
 ### Mydic
-> owner: {type: String},
-> dicname: {type: String},
-> sub: {type: String},
+> owner: {type: String}
+
+> dicname: {type: String}
+
+> sub: {type: String}
+
 > favorite: [String] // array
