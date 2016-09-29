@@ -10,11 +10,12 @@ router.use(passport.session());
 var rndString = require("randomstring");
 
 router.post('/register', function(req, res, next) {
-    if (req.body.userid === undefined || req.body.pw === undefined || req.body.userid === '' || req.body.pw === '') {
+    if (req.body.userid === undefined || req.body.pw === undefined || req.body.userid === undefined || req.body.userid === '' ||req.body.name === ''|| req.body.pw === '') {
         return res.status(403).send("Params Missing");
     } else {
         var current = new Users({
             userid: req.body.userid,
+            name: req.body.name,
             pw: req.body.pw,
             token: rndString.generate()
         });
@@ -42,6 +43,7 @@ router.post('/login', function(req, res, next) {
             if (user.userid === req.body.userid && user.pw === req.body.pw) {
                 var obj = {
                     "userid": user.userid,
+                    "name": user.name,
                     "token": user.token
                 };
                 return res.status(200).send(obj);
@@ -60,11 +62,7 @@ router.post('/auto', function(req, res, next) {
         token: req.body.token
     }, function(err, resul) {
         if (resul != null) {
-            var obj = {
-                "userid": resul.userid,
-                "token": resul.token
-            };
-            return res.status(200).send(obj);
+            return res.status(200).send(resul);
         } else {
             return res.status(401).send("Access Denied");
         }
@@ -105,7 +103,14 @@ passport.use(new FacebookTokenStrategy({
                 }
             })
         } else if (user) {
-            done(null, profile);
+          Users.findOne({userid: profile.id}, function(err, resul){
+            if(err) err;
+
+            if(resul){
+              done(null, resul);
+            }
+          });
+
         }
     })
 }));
@@ -141,9 +146,15 @@ passport.use(new TwitterTokenStrategy({
 
 router.get('/fb/token', passport.authenticate('facebook-token'), function(req, res) {
     if (req.user) {
-      Users.findOne({userid: req.user.id}, function(err, result) {
+      Users.findOne({userid: req.user.userid}, function(err, result) {
         if(err) err;
-        res.send(200, result);
+
+        if(result){
+          res.status(200).send(result);
+        }else{
+          res.status(401).send("not found");
+        }
+
       });
     } else if (!req.user) {
         res.send(401, req.user);
@@ -186,17 +197,17 @@ router.post('/register', function(req, res) {
     });
 });
 
-router.post('/authenticate', function(req, res) {
-    console.log('Auth Key : ' + req.param('token'));
-    User.findOne({
-        api_token: req.param('token')
-    }, function(err, result) {
-        if (err) {
-            throw err;
-        }
-        console.log("User " + result + "Logged In");
-        res.send(200, result);
-    })
+router.post('/destroy', function(req, res){
+  var token = req.body.token;
+
+  Users.resmove({token: token}, function(err, result){
+    if(err) return res.status(409).sned("DB ERROR");
+    if(result){
+      return res.status(200).send("good bye");
+    }else{
+      return res.status(401).send("user not found")
+    }
+  });
 });
 
 module.exports = router;
