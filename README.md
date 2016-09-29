@@ -303,6 +303,30 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     HTTP 400 : not vaild id
     
+* POST /board/like
+
+> Params
+
+  boardid: boardid [String]
+
+> Response
+
+    HTTP 200 : return board 
+
+    HTTP 400 : not vaild id
+    
+* POST /board/dislike
+
+> Params
+
+  boardid: boardid [String]
+
+> Response
+
+    HTTP 200 : return board 
+
+    HTTP 400 : not vaild id
+    
 * POST /quize
 
 > Params
