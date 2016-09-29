@@ -16,6 +16,7 @@ var board = require('./routes/board');
 var quize = require('./routes/quize');
 var image = require('./routes/image');
 var my = require('./routes/my');
+var today = require('./routes/today');
 
 var app = express();
 
@@ -28,9 +29,16 @@ var UserSchema = new mongoose.Schema({
   level: {type: Number, default: 0},
   total_point: {type: Number, default: 0},
   max_point: {type: Number, default: 3000},
-  point: {type: Number, default: 0}
+  point: {type: Number, default: 0},
+
 });
 
+var MydicSchema = new mongoose.Schema({
+    owner: {type: String},
+    dicname: {type: String},
+    sub: {type: String},
+    favorite: [String]
+});
 
 var WordSchema = new mongoose.Schema({
   id: {type: String},
@@ -44,25 +52,17 @@ var WordSchema = new mongoose.Schema({
 
   comments: [{
     writer: {type: String},
-    date: {type: String},
+    date: {type: Date},
     summary: {type: String}
   }]
 });
-
-var MydicSchema = new mongoose.Schema({
-    owner: {type: String},
-    dicname: {type: String},
-    sub: {type: String},
-    favorite: [String]
-});
-
 
 var BoardSchema = new mongoose.Schema({
      boardid: {type: String},
      title: {type: String},
      writer: {type: String},
      writerToken: {type: String},
-     date: {type: String},
+     date: {type: Date},
      contents: {type: String},
      imageurl: {type: String},
      good: {type: Number, default: 0},
@@ -71,16 +71,21 @@ var BoardSchema = new mongoose.Schema({
 
      comments:[{
        writer: {type: String},
-       date: {type: String},
+       date: {type: Date},
        summary: {type: String}
      }]
+});
+
+var TodayWordSchema= new mongoose.Schema({
+    day: {type: Date},
+    wordid: {type: String}
 });
 
 Users = mongoose.model('users', UserSchema);
 Words = mongoose.model('words', WordSchema);
 Boards = mongoose.model('boards', BoardSchema);
+TodayWords = mongoose.model('todaywords', TodayWordSchema);
 Mydics = mongoose.model('mydics', MydicSchema);
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -103,6 +108,7 @@ app.use('/board', board);
 app.use('/image', image);
 app.use('/quize', quize);
 app.use('/my', my);
+app.use('/today', today);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

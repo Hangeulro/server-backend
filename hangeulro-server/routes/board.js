@@ -18,8 +18,6 @@ router.post('/write', function(req, res) {
     var Date = req.body.date;
     var contents = req.body.contents;
 
-    console.log(token);
-
     Users.findOne({token: token}, function(err, result) {
         if (err) return res.status(409).send("DB error");
         else if(result == null) return res.status(400).send("not valid token");
@@ -54,7 +52,7 @@ router.post('/write', function(req, res) {
         var current = new Boards({
             boardid: boardid,
             title: title,
-            writer: name,
+            writer: result.name,
             writerToken: token,
             date: Date,
             contents: contents,
@@ -76,12 +74,13 @@ router.post('/commentAdd', function(req, res){
 
   Users.findOne({token: token}, function(err, user) {
       if (err) return res.status(409).send("DB error");
-      else if(result == null) return res.status(400).send("not valid token");
-      Boards.update({boardid : id}, {$push : {comments : {writer: user.name, date: date, summary: summary}}}, function(err, result){
+      else if(user == null) return res.status(400).send("not valid token");
+
+      Boards.update({boardid: boardid}, {$push : {comments : {writer: user.name, date: date, summary: summary}}}, function(err, result){
           if(err) return res.status(409).send("DB Error");
           if(result.ok > 0){
-            Boards.findOne({boardid: id}, function(err, boardlist){
-              res.status(200).send(boardlist);
+            Boards.findOne({boardid: boardid}, function(err, board){
+              res.status(200).send(board);
             });
           }else{
             res.status(300).send("nothing chenged");
@@ -94,10 +93,16 @@ router.post('/like', function(req, res) {
    var boardid = req.body.boardid;
 
    Boards.findOne({boardid: boardid}, function(err, result) {
+     if(err) return res.status(409).send("db eror");
+
      if(result !== null){
        var good = result.good;
        Boards.update({boardid: boardid}, {$set : {good: ++good}}, function(err, result){
          if(err) return res.status(409).send("DB error");
+         Boards.findOne({boardid: boardid}, function(err, board){
+           if(err) return res.status(409).send("DB error");
+           res.status(200).send(board);
+	 })
        });
     }else{
       return res.status(409).send("board not found");
@@ -111,8 +116,11 @@ router.post('/dislike', function(req, res) {
   Boards.findOne({boardid: boardid}, function(err, result) {
    if(result !== null){
       var bad = result.bad;
-      Boards.update({boardid: boardid}, {$set : {bad: --bad}}, function(err, result){
-        if(err) return res.status(409).send("DB error");
+      Boards.update({boardid: boardid}, {$set : {bad: ++bad}}, function(err, result){
+          Boards.findOne({boardid: boardid}, function(err, board) {
+             if(err) res.status(409).send("DB error");
+             res.status(200).send(board);
+          });
       });
    }else{
      return res.status(409).send("board not found");

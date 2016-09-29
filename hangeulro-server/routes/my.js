@@ -16,14 +16,35 @@ router.post('/', function(req, res) {
 
 router.post('/pointUp', function(req, res) {
   var token = req.body.token;
-  var pointUp = req.body.pointUp;
+  var pointUp = Number(req.body.pointUp);
 
   Users.findOne({token: token}, function(err, result){
     if(err) return res.status(409).send("DB error");
+
     if(result){
-      if(result.point + Number(pointUp) < result.max_point){
-        Users.update({token : token}, {$set : {point : result.point+Number(pointUp)}}, function(err, resul){
+      if(result.point + pointUp < result.max_point){
+        Users.update({token : token}, {$set : {point : result.point + pointUp, total_point: result.total_point+pointUp}}, function(err, resul){
             if(err) return res.status(409).send("DB Error");
+            if(resul.ok > 0){
+                Users.findOne({token: token}, function(err, user){
+                  if(err) return res.status(409).send("DB ERROR");
+                    if(user){
+                    return res.status(200).send(user);
+                  }else{
+                    return res.status(401).send("user not found");
+                  }
+                });
+            }else{
+             return  res.status(300).send("nothing chenged");
+            }
+        });
+      }else{ 
+        var point = Number(result.point) + pointUp;
+	var next = point - result.max_point;
+        var level = result.level+1;
+
+	Users.update({token : token}, {$set : {point : next, level: level, max_point: result.max_point + 500, total_point: result.total_point+pointUp}}, function(err, resul){
+            if(err) return res.status(410).send(err);
             if(resul.ok > 0){
                 Users.findOne({token: token}, function(err, user){
                   if(err) return res.status(409).send("DB ERROR");
