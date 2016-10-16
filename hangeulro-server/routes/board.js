@@ -1,68 +1,109 @@
 var express = require('express');
 var router = express.Router();
-var upload = require('./module/upload');
 var rndString = require("randomstring");
-var gm = require('gm');
+var Q = require('q');
+var multer = require('multer');
+var moment = require('moment');
+
+var date = moment().format();
+
+
+var upload = function (req, res, boardid) {
+    var deferred = Q.defer();
+    var storage = multer.diskStorage({
+        // 서버에 저장할 폴더
+        destination: function (req, file, cb) {
+            cb(null, "upload/");
+        },
+
+        // 서버에 저장할 파일 명
+        filename: function (req, file, cb) {
+            file.uploadedFile = {
+                name: boardid,
+                ext: file.mimetype.split('/')[1]
+            };
+
+            cb(null, file.uploadedFile.name + '.' + file.uploadedFile.ext);
+        }
+    });
+
+    var upload = multer({ storage: storage }).single('file');
+    upload(req, res, function (err) {
+        if (err) {
+            deferred.reject();
+        }else if(req.file === undefined){
+            var title = req.body.title;
+            var token = req.body.token;
+            var contents = req.body.contents;
+
+            Users.findOne({token: token}, function(err, result) {
+                if (err) return res.status(409).send("DB error");
+                else if(result == null) return res.status(400).send("not valid token");
+                var current = new Boards({
+                    boardid: boardid,
+                    title: title,
+                    writer: result.name,
+                    writerToken: token,
+                    writer_profile: result.profile_image,
+                    date: date,
+                    contents: contents,
+                });
+
+                current.save(function(err, data) {
+                    if (err) return res.status(409).send("DB error");
+                    return res.status(200).send("success");
+                });
+            });
+        }else{
+            deferred.resolve(req.file.uploadedFile);
+        }
+    });
+    return deferred.promise;
+};
+
+router.post('/write', function(req, res, next) {
+    var boardid = rndString.generate();
+
+    upload(req, res, boardid).then(function (file) {
+        var title = req.body.title.replace(/\"/gi, "");
+        var token = req.body.token.replace(/\"/gi, "");
+        var contents = req.body.contents.replace(/\"/gi, "");
+
+        var image = "upload/"+file.name+"."+file.ext;
+        var url = file.name+"."+file.ext;
+
+
+        Users.findOne({token: token}, function(err, result) {
+            if (err) return res.status(409).send("DB error");
+            else if(result == null) return res.status(400).send("not valid token");
+            var current = new Boards({
+                boardid: boardid,
+                title: title,
+                writer: result.name,
+                writerToken: token,
+                writer_profile: result.profile_image,
+                date: date,
+                contents: contents,
+                imageurl: "http://iwin247.net/image/"+url
+            });
+
+            current.save(function(err, data) {
+                if (err) return res.status(409).send("DB error");
+                return res.status(200).send("success");
+            });
+        });
+
+    }, function (err) {
+        if(err) return res.status(409).send(err);
+    });
+});
+
+
 
 router.post('/', function(req, res) {
     Boards.find({}, function(err, result) {
         if (err) return res.status(409).send("DB error")
         return res.status(200).send(result);
-    });
-});
-
-router.post('/write', function(req, res) {
-    var boardid = rndString.generate();
-    var title = req.body.title;
-    var token = req.body.token;
-    var Date = req.body.date;
-    var contents = req.body.contents;
-
-    Users.findOne({token: token}, function(err, result) {
-        if (err) return res.status(409).send("DB error");
-        else if(result == null) return res.status(400).send("not valid token");
-
-        if(req.file != undefined){
-          upload.upload(req, res, boardid).then(function(file) {
-            var image = "upload/"+file.name+"."+file.ext;
-
-            gm(image).resize(300, 300).write(image, function (err) {
-              if (err) console.error(err);
-              else console.log('done');
-            });
-                  var current = new Boards({
-                      boardid: boardid,
-                      title: title,
-                      writer: result.name,
-                      writerToken: token,
-                      date: Date,
-                      contents: contents,
-                      imageurl: "http://iwin247.net/image/"+image
-                  });
-
-                  current.save(function(err, data) {
-                      if (err) return res.status(409).send("DB error");
-                      return res.status(200).send("success");
-                  });
-          }, function(err) {
-              return res.status(500).send("image upload error");
-          });
-
-      }else{
-        var current = new Boards({
-            boardid: boardid,
-            title: title,
-            writer: result.name,
-            writerToken: token,
-            date: Date,
-            contents: contents,
-        });
-
-        current.save(function(err, data) {
-            if (err) return res.status(409).send("DB error");
-            return res.status(200).send("success");
-        });
-      }
     });
 });
 
@@ -76,7 +117,7 @@ router.post('/commentAdd', function(req, res){
       if (err) return res.status(409).send("DB error");
       else if(user == null) return res.status(400).send("not valid token");
 
-      Boards.update({boardid: boardid}, {$push : {comments : {writer: user.name, date: date, summary: summary}}}, function(err, result){
+      Boards.update({boardid: boardid}, {$push : {comments : {writer: user.name, date: date, summary: summary, profile_image: user.profile_image}}}, function(err, result){
           if(err) return res.status(409).send("DB Error");
           if(result.ok > 0){
             Boards.findOne({boardid: boardid}, function(err, board){

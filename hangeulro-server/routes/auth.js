@@ -36,9 +36,8 @@ router.post('/register', function(req, res, next) {
 
 
 router.post('/login', function(req, res, next) {
-    Users.findOne({
-        userid: req.body.userid
-    }, function(err, user) {
+    console.log(req.body.userid);
+    Users.findOne({ userid: req.body.userid}, function(err, user) {
         if (user != null) {
             if (user.userid === req.body.userid && user.pw === req.body.pw) {
                 var obj = {

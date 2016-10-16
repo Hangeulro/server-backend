@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-//require(module/oauth');
 
 router.post('/make', function(req, res, next){
     var dicname = req.body.dicname+"";
@@ -37,34 +36,49 @@ router.post('/make', function(req, res, next){
 router.post('/add', function(req, res, next){
    var dicname = req.body.dicname;
    var token = req.body.token;
-   var id = req.body.id;
+   var word = req.body.word;
+   var check = 0;
+   
+   console.log(word);
 
 
     Mydics.findOne({owner: token, dicname: dicname}, function(err, result){
        if(err) return res.status(409).send("DB ERROR");
 
        if(result.favorite !== undefined && result.favorite !== null){
-         for(var i = 0; i<result.favorite.length; i++){
-           if(result.favorite[i] === id){
-             return res.status(409).send("already exists");
-             break;
-           }
-         }
-         Mydics.update({owner: token, dicname: dicname}, {$push: {favorite: id}}, function(err, com){
-            if(err) err;
-            Mydics.findOne({owner: token, dicname: dicname}, function(err, mydic){
-               if(err) res.status(409).send("DB Error");
-               res.status(200).send(mydic);
+         Words.findOne({word: word}, function(err, words){
+            if(err) return res.status(409).send("Db Error");
+             
+            for(var i = 0; i<result.favorite.length; i++){
+              if(result.favorite[i] === words.id){
+                check = 1;
+                break;
+              }
+            }
+
+            if(!check){
+             Mydics.update({owner: token, dicname: dicname}, {$push: {favorite: words.id}}, function(err, com){
+                if(err) return  res.status(409).send("already exists");
+
+                Mydics.findOne({owner: token, dicname: dicname}, function(err, mydic){
+                  if(err) res.status(409).send("DB Error");
+                  return res.status(200).send(mydic);
+                });
             });
-       });
+	   }else{
+              return res.status(409).send("error");
+           }
+         });
 
        }else{
-          Mydics.update({owner: token, dicname: dicname}, {$push: {favorite: id}}, function(err, com){
-             if(err) err;
-             Mydics.findOne({owner: token, dicname: dicname}, function(err, mydic){
-                if(err) res.status(409).send("DB Error");
-                res.status(200).send(mydic);
-             });
+          Words.findOne({word: word}, function(err, words){
+            Mydics.update({owner: token, dicname: dicname}, {$push: {favorite: words.id}}, function(err, com){
+               if(err) err;
+               Mydics.findOne({owner: token, dicname: dicname}, function(err, mydic){
+                  if(err) return res.status(409).send("DB Error");
+                  res.status(200).send(mydic);
+               });
+          });
         });
       }
     });
