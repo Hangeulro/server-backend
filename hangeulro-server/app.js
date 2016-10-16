@@ -17,6 +17,7 @@ var quize = require('./routes/quize');
 var image = require('./routes/image');
 var my = require('./routes/my');
 var today = require('./routes/today');
+var test = require('./routes/test');
 
 var app = express();
 
@@ -53,7 +54,8 @@ var WordSchema = new mongoose.Schema({
   comments: [{
     writer: {type: String},
     date: {type: Date},
-    summary: {type: String}
+    summary: {type: String},
+      profile_image: {type: String},
   }]
 });
 
@@ -62,9 +64,10 @@ var BoardSchema = new mongoose.Schema({
      title: {type: String},
      writer: {type: String},
      writerToken: {type: String},
+     writer_profile: {type: String},
      date: {type: Date},
      contents: {type: String},
-     imageurl: {type: String},
+     imageurl: {type: String, default: "null"},
      good: {type: Number, default: 0},
      bad: {type: Number, default: 0},
      share: {type: Number, default: 0},
@@ -72,7 +75,8 @@ var BoardSchema = new mongoose.Schema({
      comments:[{
        writer: {type: String},
        date: {type: Date},
-       summary: {type: String}
+       summary: {type: String},
+         profile_image: {type: String},
      }]
 });
 
@@ -109,6 +113,7 @@ app.use('/image', image);
 app.use('/quize', quize);
 app.use('/my', my);
 app.use('/today', today);
+app.use('/test', test);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

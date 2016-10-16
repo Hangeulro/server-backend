@@ -70,7 +70,7 @@ router.post('/commentAdd', function(req, res){
   Users.findOne({token: token}, function(err, user){
     if(err) return res.status(401).send("user not found");
 
-    Words.update({id : id}, {$push : {comments : {writer: user.name, date: date, summary: summary}}}, function(err, result){
+    Words.update({id : id}, {$push : {comments : {writer: user.name, date: date, summary: summary, profile_image: user.profile_image}}}, function(err, result){
         if(err) return res.status(409).send("DB Error");
 
         if(result.ok > 0){
