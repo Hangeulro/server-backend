@@ -39,7 +39,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     HTTP 401 : ID / Password Incorrect
 
-* POST /auth/login/auto : Auto Login
+* POST /auth/auto : Auto Login
 
 > Params
 
@@ -70,8 +70,22 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
     HTTP 300 : already exists
 
     HTTP 400 : DB Error
+
+* POST /auth/destroy
+
+> Params
+
+    token : token [String]
+
+> Response
+
+    HTTP 200 : good bye
+
+    HTTP 401 : not found
     
-* GET /auth/fb/token : send 
+    HTTP 409 : DB ERROR
+    
+* GET /auth/fb/token 
 
 > Params
 
@@ -144,7 +158,21 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
     HTTP 200 : return word Info [String Json]
 
     HTTP 401 : No word Found
+    
+* POST /word/commentAdd
 
+> Params
+
+    token : writer token [String]
+    date : write date [String]
+    wordid : wordid to write [String]
+    summary : comment summary [String]
+
+> Response
+
+    HTTP 200 : return word Info [String Json]
+
+    HTTP 401 : No word Found
 
 * GET /version
 
@@ -228,13 +256,13 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
         file: if user upload image use key file
 
-        token: mydic owner token  [String]
+        token: writer token  [String]
 
-        date: mydic name  [String]
+        date: date  [String]
 
         title: title name [String]
 
-        contnets: contnets [String]
+        contents: contents [String]
 
 > Response
 
@@ -247,11 +275,11 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > Params
 
-  token: mydic owner token  [String]
+  token: writer token  [String]
 
   boardid: boardid [String]
 
-  summary: board summary [String]
+  comment: board comment [String]
 
   date: write date [String]
 
@@ -275,7 +303,31 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     HTTP 400 : not vaild id
     
-* GET /quize
+* POST /board/like
+
+> Params
+
+  boardid: boardid [String]
+
+> Response
+
+    HTTP 200 : return board 
+
+    HTTP 400 : not vaild id
+    
+* POST /board/dislike
+
+> Params
+
+  boardid: boardid [String]
+
+> Response
+
+    HTTP 200 : return board 
+
+    HTTP 400 : not vaild id
+    
+* POST /quize
 
 > Params
 
@@ -284,6 +336,50 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 > Response
 
     HTTP 200 : return random word
+
+
+* POST /my
+
+> Params
+
+  token: user token
+
+> Response
+
+    HTTP 200: return user data
+    
+    HTTP 401: user not found
+    
+    HTTP 409: DB ERROR
+    
+* POST /my/pointUp
+
+> Params
+
+  token: user token
+  pointUp: pointUp
+
+> Response
+
+    HTTP 200: return user data
+    
+    HTTP 401: user not found
+    
+    HTTP 409: DB ERROR
+    
+* POST /my/board
+
+> Params
+
+  token: user token
+
+> Response
+
+    HTTP 200: return writed board
+    
+    HTTP 401: user not found
+    
+    HTTP 409: DB ERROR
     
 ## Database Schema
 
@@ -318,6 +414,11 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > tag : tag of Word [String Array]
 
+> comments: [{
+   writer: {type: String},
+   date: {type: String},
+   summary: {type: String}
+  }]
 
 ### board
 
@@ -335,12 +436,17 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > bad : [Number]
 
-### mydic
+> comments:[{
+       writer: {type: String},
+       date: {type: String},
+       summary: {type: String}
+     }]
+
+### Mydic
+> owner: {type: String}
 
 > dicname: {type: String}
 
 > sub: {type: String}
 
-> favorite: [String array]
-
-> owner: {type: String}
+> favorite: [String] // array
