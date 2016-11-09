@@ -381,6 +381,17 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
     
     HTTP 409: DB ERROR
     
+    
+* GET /today
+
+> Response
+
+    HTTP 200: return today's word
+    
+    HTTP 401: user not found
+    
+    HTTP 409: DB ERROR
+    
 ## Database Schema
 
 ### User
