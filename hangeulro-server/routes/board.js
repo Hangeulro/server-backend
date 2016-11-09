@@ -3,12 +3,11 @@ var router = express.Router();
 var rndString = require("randomstring");
 var Q = require('q');
 var multer = require('multer');
-var moment = require('moment');
-
-var date = moment().format();
+var moment = require('moment-timezone');
 
 
-var upload = function (req, res, boardid) {
+
+var upload = function (req, res, boardid, date) {
     var deferred = Q.defer();
     var storage = multer.diskStorage({
         // 서버에 저장할 폴더
@@ -63,8 +62,9 @@ var upload = function (req, res, boardid) {
 
 router.post('/write', function(req, res, next) {
     var boardid = rndString.generate();
+    var date = moment().tz("Asia/Seoul").format();
 
-    upload(req, res, boardid).then(function (file) {
+    upload(req, res, boardid, date).then(function (file) {
         var title = req.body.title.replace(/\"/gi, "");
         var token = req.body.token.replace(/\"/gi, "");
         var contents = req.body.contents.replace(/\"/gi, "");

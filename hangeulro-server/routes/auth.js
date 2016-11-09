@@ -199,7 +199,7 @@ router.post('/register', function(req, res) {
 router.post('/destroy', function(req, res){
   var token = req.body.token;
 
-  Users.resmove({token: token}, function(err, result){
+  Users.remove({token: token}, function(err, result){
     if(err) return res.status(409).sned("DB ERROR");
     if(result){
       return res.status(200).send("good bye");

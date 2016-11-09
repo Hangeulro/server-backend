@@ -83,4 +83,15 @@ router.post('/board', function(req, res) {
    });
 });
 
+router.post('/edit', function(req, res){
+  var token = req.body.token;
+  var newName = req.body.newName;
+  Users.update({token: token}, {$set: {name: newName}}, function(err, result){
+    if(err) res.status(409).send("DB error");
+    if(result){
+     res.status(200).json({name: newName});
+    }
+  });
+});
+
 module.exports = router;
