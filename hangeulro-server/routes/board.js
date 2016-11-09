@@ -194,4 +194,22 @@ router.post('/destroy', function(req, res){
   });
 });
 
+
+router.post('/edit', function(req, res){
+  var title = req.body.title;
+  var boardid = req.body.boardid;
+  var contents = req.body.contents;
+  var date = moment().tz("Asia/Seoul").format();
+  
+  Boards.update({boardid: boardid}, {$set: {title: title, contents: contents, date: date}},function(err, result){
+    if(err) return res.status(409).sned("DB ERROR");
+
+    if(result){
+      return res.status(200).send("changed");
+    }else{
+      return res.status(401).send("adsf")
+    }
+  });
+});
+
 module.exports = router;
