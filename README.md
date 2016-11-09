@@ -389,9 +389,11 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
   
   newName: new name
   
+  file: profile image change
+  
 > Response
 
-    HTTP 200: return user new name
+    HTTP 200: if u send just image then just change profile image if u send just newName tend just change name
     
     HTTP 409: DB ERROR
     
