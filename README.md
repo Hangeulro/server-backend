@@ -340,7 +340,24 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
     HTTP 200 : goodbye
 
     HTTP 400 : not vaild id
+
+* POST /board/edit
+
+> Params
+
+  boardid: boardid [String]
+  
+  title: title [String]
+  
+  contents: contents [String}
+  
+> Response
+
+    HTTP 200 : changed
+
+    HTTP 400 : not vaild id
     
+
 * POST /quize
 
 > Params
