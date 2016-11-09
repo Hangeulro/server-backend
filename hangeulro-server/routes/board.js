@@ -180,4 +180,18 @@ router.post('/detail', function(req, res){
    });
 });
 
+router.post('/destroy', function(req, res){
+  var boardid = req.body.boardid;
+
+  Boards.remove({boardid: boardid}, function(err, result){
+    if(err) return res.status(409).sned("DB ERROR");
+
+    if(result){
+      return res.status(200).send("good bye");
+    }else{
+      return res.status(401).send("board not found")
+    }
+  });
+});
+
 module.exports = router;
