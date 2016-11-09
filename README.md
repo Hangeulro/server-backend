@@ -381,6 +381,19 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
     
     HTTP 409: DB ERROR
     
+* POST /my/edit
+
+> Params
+
+  token: user token
+  
+  newName: new name
+  
+> Response
+
+    HTTP 200: return user new name
+    
+    HTTP 409: DB ERROR
     
 * GET /today
 
