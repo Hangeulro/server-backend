@@ -329,6 +329,20 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
     
 * POST /quize
 
+* POST /board/destroy
+
+> Params
+
+  boardid: boardid [String]
+
+> Response
+
+    HTTP 200 : goodbye
+
+    HTTP 400 : not vaild id
+    
+* POST /quize
+
 > Params
 
   nope
