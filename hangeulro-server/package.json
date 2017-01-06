@@ -13,6 +13,7 @@
     "express": "~4.13.4",
     "gm": "^1.23.0",
     "moment": "^2.15.1",
+    "moment-timezone": "^0.5.7",
     "morgan": "~1.7.0",
     "multer": "^1.2.0",
     "serve-favicon": "~2.3.0"

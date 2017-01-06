@@ -1,5 +1,54 @@
 var express = require('express');
 var router = express.Router();
+var Q = require('q');
+var multer = require('multer');
+var moment = require('moment-timezone');
+
+
+
+var upload = function (req, res, token, newName) {
+    var deferred = Q.defer();
+    var storage = multer.diskStorage({
+        // 서버에 저장할 폴더
+        destination: function (req, file, cb) {
+            cb(null, "upload/users");
+        },
+
+        // 서버에 저장할 파일 명
+        filename: function (req, file, cb) {
+            var token = req.body.token;
+            file.uploadedFile = {
+                name: token,
+                ext: file.mimetype.split('/')[1]
+            };
+
+            cb(null, file.uploadedFile.name + '.' + file.uploadedFile.ext);
+        }
+    });
+
+    var upload = multer({ storage: storage }).single('file');
+    upload(req, res, function (err) {
+        if (err) {
+            deferred.reject();
+        }else if (req.file === undefined){
+           var token = req.body.token;
+           var newName = req.body.newName;
+
+  	   Users.update({token: token}, {$set: {name: newName}}, function(err, result){
+    		if(err) res.status(409).send("DB error");
+		if(result){
+		  res.status(200).json({name: newName});
+                }
+          });
+          
+        }else{
+            deferred.resolve(req.file.uploadedFile);
+        }
+    });
+    return deferred.promise;
+};
+
+
 
 router.post('/', function(req, res) {
   var token = req.body.token;
@@ -81,6 +130,28 @@ router.post('/board', function(req, res) {
        });
     }
    });
+});
+
+router.post('/edit', function(req, res){
+
+   upload(req, res).then(function (file) {
+  	var token = req.body.token;
+  	var newName = req.body.newName;
+     if(newName != undefined){
+        Users.update({token: token}, {$set: {profile_image: "http://iwin247.net/image/users/"+token, name: newName}}, function(err, result){
+           if(err) res.sendSatus(409);
+           if(result) res.status(200).send("changed");
+        });
+     }else{
+        Users.update({token: token}, {$set: {profile_image: "http://iwin247.net/image/users/"+token}}, function(err, result){
+           if(err) res.sendSatus(409);
+           if(result) res.status(200).send("changed");
+        });
+     }
+
+    }, function (err) {
+        if(err) return res.status(409).send(err);
+    });
 });
 
 module.exports = router;

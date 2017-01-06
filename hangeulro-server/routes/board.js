@@ -3,12 +3,11 @@ var router = express.Router();
 var rndString = require("randomstring");
 var Q = require('q');
 var multer = require('multer');
-var moment = require('moment');
-
-var date = moment().format();
+var moment = require('moment-timezone');
 
 
-var upload = function (req, res, boardid) {
+
+var upload = function (req, res, boardid, date) {
     var deferred = Q.defer();
     var storage = multer.diskStorage({
         // 서버에 저장할 폴더
@@ -63,8 +62,9 @@ var upload = function (req, res, boardid) {
 
 router.post('/write', function(req, res, next) {
     var boardid = rndString.generate();
+    var date = moment().tz("Asia/Seoul").format();
 
-    upload(req, res, boardid).then(function (file) {
+    upload(req, res, boardid, date).then(function (file) {
         var title = req.body.title.replace(/\"/gi, "");
         var token = req.body.token.replace(/\"/gi, "");
         var contents = req.body.contents.replace(/\"/gi, "");
@@ -178,6 +178,38 @@ router.post('/detail', function(req, res){
        return res.status(200).send(result);
      }
    });
+});
+
+router.post('/destroy', function(req, res){
+  var boardid = req.body.boardid;
+
+  Boards.remove({boardid: boardid}, function(err, result){
+    if(err) return res.status(409).sned("DB ERROR");
+
+    if(result){
+      return res.status(200).send("good bye");
+    }else{
+      return res.status(401).send("board not found")
+    }
+  });
+});
+
+
+router.post('/edit', function(req, res){
+  var title = req.body.title;
+  var boardid = req.body.boardid;
+  var contents = req.body.contents;
+  var date = moment().tz("Asia/Seoul").format();
+  
+  Boards.update({boardid: boardid}, {$set: {title: title, contents: contents, date: date}},function(err, result){
+    if(err) return res.status(409).sned("DB ERROR");
+
+    if(result){
+      return res.status(200).send("changed");
+    }else{
+      return res.status(401).send("adsf")
+    }
+  });
 });
 
 module.exports = router;

@@ -1,16 +1,16 @@
 var express = require('express');
 var router = express.Router();
-require('date-utils');
-
+var moment = require('moment-timezone');
+moment().tz("America/Los_Angeles").format();
 
 router.get('/', function(req,res){
     var dt = new Date();
-    var today = dt.toFormat('YYYY-MM-DD');
+    var today = moment().tz("Asia/Seoul").format("YYYY MM DD");
 
     TodayWords.findOne({day: today}, function(err, result){
          if(err) return res.status(409).send("DB Error");
 
-         if(result != null) {
+         if(result) {
              Words.findOne({id: result.wordid}, function(err, word) {
                  if(err) return res.status(409).send("DB Error");
                  return res.status(200).send(word);

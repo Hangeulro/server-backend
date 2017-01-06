@@ -330,6 +330,37 @@ the end
     
 * POST /quize
 
+* POST /board/destroy
+
+> Params
+
+  boardid: boardid [String]
+
+> Response
+
+    HTTP 200 : goodbye
+
+    HTTP 400 : not vaild id
+
+* POST /board/edit
+
+> Params
+
+  boardid: boardid [String]
+  
+  title: title [String]
+  
+  contents: contents [String}
+  
+> Response
+
+    HTTP 200 : changed
+
+    HTTP 400 : not vaild id
+    
+
+* POST /quize
+
 > Params
 
   nope
@@ -377,6 +408,32 @@ the end
 > Response
 
     HTTP 200: return writed board
+    
+    HTTP 401: user not found
+    
+    HTTP 409: DB ERROR
+    
+* POST /my/edit
+
+> Params
+
+  token: user token
+  
+  newName: new name
+  
+  file: profile image change
+  
+> Response
+
+    HTTP 200: if u send just image then just change profile image if u send just newName tend just change name
+    
+    HTTP 409: DB ERROR
+    
+* GET /today
+
+> Response
+
+    HTTP 200: return today's word
     
     HTTP 401: user not found
     

@@ -81,7 +81,7 @@ var BoardSchema = new mongoose.Schema({
 });
 
 var TodayWordSchema= new mongoose.Schema({
-    day: {type: Date},
+    day: {type: String},
     wordid: {type: String}
 });
 
