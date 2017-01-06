@@ -1,3 +1,6 @@
+var mongoose = require('mongoose');
+var db = mongoose.connect('mongodb://localhost:27017/hangul'');
+
 var UserSchema = new mongoose.Schema({
   userid:{type: String, required:true, unique:true},
   pw:{type: String},
@@ -68,4 +71,9 @@ Boards = mongoose.model('boards', BoardSchema);
 TodayWords = mongoose.model('todaywords', TodayWordSchema);
 Mydics = mongoose.model('mydics', MydicSchema);
 
+exports.Mydics = Mydics;
+exports.Boards = Boards;
+exports.Words = Words;
+exports.Users = Users;
+exports.db = db;
 
