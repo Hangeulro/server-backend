@@ -6,7 +6,6 @@ var multer = require('multer');
 var moment = require('moment-timezone');
 
 
-
 var upload = function (req, res, boardid, date) {
     var deferred = Q.defer();
     var storage = multer.diskStorage({
@@ -132,6 +131,7 @@ router.post('/commentAdd', function(req, res){
 
 router.post('/like', function(req, res) {
    var boardid = req.body.boardid;
+   var token = req.body.token;
 
    Boards.findOne({boardid: boardid}, function(err, result) {
      if(err) return res.status(409).send("db eror");
@@ -183,11 +183,12 @@ router.post('/detail', function(req, res){
 router.post('/destroy', function(req, res){
   var boardid = req.body.boardid;
 
+  if(boardid == undefined || boardid == null || boardid == "") return res.status(412).send("plz send correct boardid");
+
   Boards.remove({boardid: boardid}, function(err, result){
     if(err) return res.status(409).sned("DB ERROR");
-
     if(result){
-      return res.status(200).send("good bye");
+      return res.status(200).send("good removed");
     }else{
       return res.status(401).send("board not found")
     }
