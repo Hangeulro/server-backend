@@ -15,8 +15,14 @@ var rndString = require("randomstring");
 var fs = require('fs');
 var router = express.Router();
 var passport = require('passport');
+var rndString = require("randomstring");
+var multer = require('multer');
+var moment = require('moment-timezone');
 
-var db = require('./mongo');
+
+//export settting
+require('./mongo'); //mongodb
+var func = require('./func'); //functions
 
 var port = normalizePort(process.env.PORT || '3000');
 
@@ -38,13 +44,13 @@ app.use(passport.session());
 
 //router setting
 var index = require('./routes/index')(router);
-var auth = require('./routes/auth')(router, rndString, passport);
+var auth = require('./routes/auth')(router, rndString, passport, func);
 var word = require('./routes/word');
 var version = require('./routes/version');
 var mydic = require('./routes/mydic');
-var board = require('./routes/board');
+var board = require('./routes/board')(router, moment, rndString, func);
 var quize = require('./routes/quize');
-var image = require('./routes/image');
+var image = require('./routes/image')(router);
 var my = require('./routes/my');
 var today = require('./routes/today');
 
