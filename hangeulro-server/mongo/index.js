@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var db = mongoose.connect('mongodb://localhost:27017/hangul'');
+var db = mongoose.connect('mongodb://localhost:27017/hangul');
 
 var UserSchema = new mongoose.Schema({
   userid:{type: String, required:true, unique:true},
