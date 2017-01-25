@@ -1,5 +1,4 @@
-
-module.exports = (router) => {
+module.exports = (router, func) => {
   router.get('/my/:token', function(req, res) {
     var params = ['token'];
     func.check_params(req.params, params, res);
