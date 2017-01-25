@@ -1,9 +1,7 @@
 var FacebookTokenStrategy = require('passport-facebook-token');
 var TwitterTokenStrategy = require('passport-twitter-token');
 
-module.exports = auth;
-
-function auth(app, rndString, passport){
+module.exports = (router, rndString, passport) =>{
   passport.use(new FacebookTokenStrategy({
     clientID: "1213122912074048",
     clientSecret: "259b6ddcb09ade12157f47f4fb2d5c95",
@@ -64,7 +62,7 @@ function auth(app, rndString, passport){
 
 
 
-  app.post('/auth/register', function(req, res, next) {
+  router.post('/register', function(req, res, next) {
     var params = ['userid', 'pw', 'name'];
 
     check_param(req.body, params);
@@ -88,19 +86,19 @@ function auth(app, rndString, passport){
    });
   })
 
-  .post('/auth/login', function(req, res, next) {
+  .post('/login', function(req, res, next) {
     var params = ['userid', 'pw', 'name'];
     check_param(req.body, params, res)
 
     Users.findOne({ userid: req.body.userid, pw: req.body.pw}, function(err, user) {
       if (user) 
-        return res.status(200).json({userid: user.userid, name: user.name, token: user.tokend});
+        return res.status(200).json({userid: user.userid, name: user.name, token: user.token});
       else
         return res.status(401).send("connot login");
    });
  })
 
-  .post('/auth/auto', function(req, res, next) {
+  .post('/auto', function(req, res, next) {
     var params = ['token'];
     check_param(req.bdoy, params, token);
     Users.findOne({token: req.body.token}, function(err, users) {
@@ -109,7 +107,7 @@ function auth(app, rndString, passport){
     });
   })
 
-  .get('/auth/fb/token', passport.authenticate('facebook-token'), function(req, res) {
+  .get('/fb/token', passport.authenticate('facebook-token'), function(req, res) {
     if (req.user) {
       Users.findOne({userid: req.user.userid}, function(err, users) {
         if(err) err;
@@ -121,7 +119,7 @@ function auth(app, rndString, passport){
     }
   })
 
-  .get('/auth/tw/token', passport.authenticate('twitter-token'), function(req, res) {
+  .get('/tw/token', passport.authenticate('twitter-token'), function(req, res) {
     if(req.user) {
       Users.findOne({userid: req.user.id}, function(err, result) {
         if(err) err;
@@ -138,7 +136,7 @@ function auth(app, rndString, passport){
     failureRedirect: '/'
   }))
 
-  .delete('/auth/destroy', function(req, res){
+  .delete('/destroy', function(req, res){
     var params = ['token'];
     check_param(req.body, params, res);
 
@@ -155,4 +153,6 @@ function auth(app, rndString, passport){
      var check = params.every(str => req_param[str] != undefined || req_param[str] != null);
      if(!check) res.status(400).send("param missing");
   }
+
+  return router;
 }

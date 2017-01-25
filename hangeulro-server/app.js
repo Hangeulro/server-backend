@@ -13,6 +13,7 @@ var server = http.createServer(app);
 var debug = require('debug')('dicon:server');
 var rndString = require("randomstring");
 var fs = require('fs');
+var router = express.Router();
 var passport = require('passport');
 
 var db = require('./mongo');
@@ -36,16 +37,31 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //router setting
-require('./routes/index')(app);
-require('./routes/auth')(app, rndString, passport);
-require('./routes/word');
-require('./routes/version');
-require('./routes/mydic');
-require('./routes/board');
-require('./routes/quize');
-require('./routes/image');
-require('./routes/my');
-require('./routes/today');
+var index = require('./routes/index')(router);
+var auth = require('./routes/auth')(router, rndString, passport);
+var word = require('./routes/word');
+var version = require('./routes/version');
+var mydic = require('./routes/mydic');
+var board = require('./routes/board');
+var quize = require('./routes/quize');
+var image = require('./routes/image');
+var my = require('./routes/my');
+var today = require('./routes/today');
+
+
+//router
+app.use('/', index);
+app.use('/auth', auth);
+app.use('/word', word);
+app.use('/version', version);
+app.use('/mydic', mydic);
+app.use('/board', board);
+app.use('/image', image);
+app.use('/quize', quize);
+app.use('/my', my);
+app.use('/today', today);
+
+
 
 //create server
 server.listen(port);
