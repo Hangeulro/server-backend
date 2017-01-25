@@ -10,7 +10,6 @@
 
 # Hangeulro-server
 hangeulro Project (smarteen app challenge 2016) Node.JS Backend
-the end
 
 ## API Document
 
@@ -243,7 +242,7 @@ the end
     HTTP 409 : send reason "already exists" or DB ERROR
 
 
-* POST /board
+* GET /board (it change post to get)
 
 > Response
 
@@ -269,10 +268,10 @@ the end
 
         HTTP 200 : return Success
 
-        HTTP 409 : send reason "already exists" or DB ERROR
+        HTTP 500 : send reason "already exists" or DB ERROR (it change 409 to 500)
 
 
-* POST /board/commentAdd
+* POST /board/comment (it change comment add to comment)
 
 > Params
 
@@ -288,15 +287,11 @@ the end
 
     HTTP 200 : return Success
 
-    HTTP 400 : not vaild token
+    HTTP 401 : not vaild token
 
-    HTTP 409 : send reason "already exists" or DB ERROR
+    HTTP 500 : send reason "already exists" or DB ERROR
     
-* POST /board/detail
-
-> Params
-
-  boardid: boardid [String]
+* GET /board/:boardid (it change post /board/detail to get /board/:boardid)
 
 > Response
 
@@ -304,7 +299,7 @@ the end
 
     HTTP 400 : not vaild id
     
-* POST /board/like
+* PUT /board/like
 
 > Params
 
@@ -316,7 +311,7 @@ the end
 
     HTTP 400 : not vaild id
     
-* POST /board/dislike
+* PUT /board/dislike
 
 > Params
 
@@ -327,10 +322,8 @@ the end
     HTTP 200 : return board 
 
     HTTP 400 : not vaild id
-    
-* POST /quize
 
-* POST /board/destroy
+* DELETE /board/destroy (change post to DELETE)
 
 > Params
 
@@ -342,7 +335,11 @@ the end
 
     HTTP 400 : not vaild id
 
-* POST /board/edit
+    HTTP 401 : param not found
+
+    HTPP 500 : DB ERR
+
+* PUT /board/edit (chane post to put)
 
 > Params
 
@@ -356,8 +353,9 @@ the end
 
     HTTP 200 : changed
 
-    HTTP 400 : not vaild id
-    
+    HTTP 401 : not vaild board id
+
+    HTTP 500 : DB ERR
 
 * POST /quize
 
@@ -370,25 +368,22 @@ the end
     HTTP 200 : return random word
 
 
-* POST /my
-
-> Params
-
-  token: user token
+* GET /my/:token (change post /my to GET /my/:token)
 
 > Response
 
     HTTP 200: return user data
     
-    HTTP 401: user not found
+    HTTP 401: vaild token
     
-    HTTP 409: DB ERROR
+    HTTP 500: DB ERROR (change 409 to 500)
     
-* POST /my/pointUp
+* PUT /my/pointUp
 
-> Params
+> Params (change post to put)
 
   token: user token
+
   pointUp: pointUp
 
 > Response
@@ -396,10 +391,12 @@ the end
     HTTP 200: return user data
     
     HTTP 401: user not found
+
+    HTTP 412: nothing change
     
-    HTTP 409: DB ERROR
+    HTTP 500: DB ERROR
     
-* POST /my/board
+* GET /my/board (Chage post to get)
 
 > Params
 
@@ -408,12 +405,14 @@ the end
 > Response
 
     HTTP 200: return writed board
+
+    HTTP 401: vaild token
+
+    HTTP 404: ever written
     
-    HTTP 401: user not found
+    HTTP 500: DB ERROR
     
-    HTTP 409: DB ERROR
-    
-* POST /my/edit
+* PUT /my/edit (change post to put)
 
 > Params
 
@@ -427,7 +426,7 @@ the end
 
     HTTP 200: if u send just image then just change profile image if u send just newName tend just change name
     
-    HTTP 409: DB ERROR
+    HTTP 500: DB ERROR
     
 * GET /today
 
