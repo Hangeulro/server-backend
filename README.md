@@ -15,13 +15,15 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 * Common Response
 
-    HTTP 200: Success
+  HTTP 200: Success
 
-    HTTP 400: DB error
+  HTTP 400: Params Missing
 
-    HTTP 401: Bad Request
+  HTTP 401: Bad Request
 
-    HTTP 403: Params Missing
+  HTTP 404: not found
+
+  HTTP 500: DB error
 
 * POST /auth/login : User Login
 
@@ -33,9 +35,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 > Response
 
-    HTTP 200 : User
-
-    HTTP 400 : No user
+    HTTP 200 : send User
 
     HTTP 401 : ID / Password Incorrect
 
@@ -49,7 +49,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     HTTP 200 : UserID and token or apikey
 
-    HTTP 401 : Access Denied
+    HTTP 401 : Un Auth
 
 
 * POST /auth/register : User Register
@@ -60,18 +60,18 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     pw : User's Password [String]
 
-    username : User's Name [String]
+    name : User's Name [String] (it change username to name)
 
 
 > Response
 
     HTTP 200 : User
 
-    HTTP 300 : already exists
+    HTTP 409 : already exists (it change 300 to 409)
 
-    HTTP 400 : DB Error
+    HTTP 500 : DB Error (it change 400 to 500)
 
-* POST /auth/destroy
+* DElETE /auth/destroy (it change post to Delete)
 
 > Params
 
@@ -81,9 +81,9 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     HTTP 200 : good bye
 
-    HTTP 401 : not found
+    HTTP 404 : not found (it change 401 to 404)
     
-    HTTP 409 : DB ERROR
+    HTTP 500 : DB ERROR (it change 409 to 500)
     
 * GET /auth/fb/token 
 
