@@ -14,7 +14,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 ## API Document
 
 * Common Response
-
+  (all DB err change 409 to 500)
   HTTP 200: Success
 
   HTTP 400: Params Missing
@@ -181,16 +181,13 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
     HTTP 200 : return version [String]
 
 
-* POST /mydic
-    > Params
-
-        token: mydic owner token  [String]
+* POST /mydic (change POST /mydic to GET /mydic/:token)
 
     > Response
 
         HTTP 200 : return mydic list [String array]
 
-        HTTP 409 : send reason "already exists" or DB ERROR
+        HTTP 412 : send reason "already exists" or DB ERROR
 
 * POST /mydic/make
 
@@ -206,10 +203,10 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     HTTP 200 : Success
 
-    HTTP 409 : DB ERROR
+    HTTP 500 : DB ERROR
 
 
-* POST /mydic/add
+* PUT /mydic/add (change post to put)
 
 > Params
 
@@ -223,9 +220,11 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     HTTP 200 : return word list [String array]
 
-    HTTP 409 : send reason "already exists" or DB ERROR
+    HTTP 412 : send reason "already exists" 
 
-* POST /mydic/pop
+    HTTP 500 : DB ERROR
+
+* PUT /mydic/pop (change post to put)
 
 > Params
 
