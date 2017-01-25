@@ -1,7 +1,7 @@
 var FacebookTokenStrategy = require('passport-facebook-token');
 var TwitterTokenStrategy = require('passport-twitter-token');
 
-module.exports = (router, rndString, passport) =>{
+module.exports = (router, rndString, passport, func) =>{
   passport.use(new FacebookTokenStrategy({
     clientID: "1213122912074048",
     clientSecret: "259b6ddcb09ade12157f47f4fb2d5c95",
@@ -65,7 +65,7 @@ module.exports = (router, rndString, passport) =>{
   router.post('/register', function(req, res, next) {
     var params = ['userid', 'pw', 'name'];
 
-    check_param(req.body, params);
+    func.check_param(req.body, params);
     var current = new Users({
       userid: req.body.userid,
       name: req.body.name,
@@ -88,7 +88,7 @@ module.exports = (router, rndString, passport) =>{
 
   .post('/login', function(req, res, next) {
     var params = ['userid', 'pw', 'name'];
-    check_param(req.body, params, res)
+    func.check_param(req.body, params, res)
 
     Users.findOne({ userid: req.body.userid, pw: req.body.pw}, function(err, user) {
       if (user) 
@@ -100,7 +100,7 @@ module.exports = (router, rndString, passport) =>{
 
   .post('/auto', function(req, res, next) {
     var params = ['token'];
-    check_param(req.bdoy, params, token);
+    func.check_param(req.bdoy, params, token);
     Users.findOne({token: req.body.token}, function(err, users) {
       if (users) return res.status(200).send(resul);
       else return res.status(401).send("Un Auth");
@@ -138,7 +138,7 @@ module.exports = (router, rndString, passport) =>{
 
   .delete('/destroy', function(req, res){
     var params = ['token'];
-    check_param(req.body, params, res);
+    func.check_param(req.body, params, res);
 
     Users.remove({token: req.body.token}, function(err, users){
       if(err) return res.status(500).sned("DB ERROR");
@@ -146,13 +146,6 @@ module.exports = (router, rndString, passport) =>{
       else return res.status(404).send("user not found")
     });
   })
-
-
-  // functions 
-  function check_param(req_param, params, res){
-     var check = params.every(str => req_param[str] != undefined || req_param[str] != null);
-     if(!check) res.status(400).send("param missing");
-  }
 
   return router;
 }
