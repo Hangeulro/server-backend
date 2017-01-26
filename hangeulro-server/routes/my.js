@@ -1,7 +1,9 @@
 module.exports = (router, func) => {
   router.get('/my/:token', function(req, res) {
     var params = ['token'];
-    func.check_params(req.params, params, res);
+    if(!func.check_param(req.bdoy, params, token)){
+      res.status(400).send("param missing");
+    }
 
     var token = req.param.token;
 
@@ -14,7 +16,9 @@ module.exports = (router, func) => {
 
   .put('/pointUp', function(req, res) {
     var params = ['token', 'pointUp'];
-    func.check_params(req.params, params, res);
+    if(!func.check_param(req.bdoy, params, token)){
+      res.status(400).send("param missing");
+    }
     
     var token = req.body.token;
     var pointUp = Number(req.body.pointUp);
@@ -56,7 +60,9 @@ module.exports = (router, func) => {
 
   .get('/board', (req, res) =>{
     var params = ['token'];
-    func.check_params(req.params, params, res);
+    if(!func.check_param(req.bdoy, params, token)){
+      res.status(400).send("param missing");
+    }
 
     var token = req.body.token;
 
@@ -75,6 +81,9 @@ module.exports = (router, func) => {
 
   .put('/edit', function(req, res){
     var params = ['token','newName'];
+    if(!func.check_param(req.bdoy, params, token)){
+      res.status(400).send("param missing");
+    }
 
     func.profile_upload(req, res).then(function (file) {
       var token = req.body.token;
