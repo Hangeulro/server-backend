@@ -114,7 +114,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     HTTP 400 : DB Error 
 
-* POST /word
+* GET /word (change POST to GET)
 
 > Response
 
@@ -134,11 +134,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     HTTP 401 : No word Found
 
-* POST /word/cata
-
-> Params
-
-    cata : word catalog  [String]
+* GET /word/cata/:cata (change post /word/cata to GET /word/cata/:cata)
 
 > Response
 
@@ -147,11 +143,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
     HTTP 401 : No word Found
  
     
-* POST /word/getWordInfo
-
-> Params
-
-    wordid : word id to get word Info  [String]
+* GET /word/:wordid (change POST /word/getwordInfo to GET /word/:wordid)
 
 > Response
 
@@ -159,7 +151,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     HTTP 401 : No word Found
     
-* POST /word/commentAdd
+* POST /word/comment (change commentadd to comment)
 
 > Params
 
