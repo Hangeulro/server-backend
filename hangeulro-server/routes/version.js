@@ -1,9 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var rndString = require("randomstring");
+module.exports = (router) => {
 
-router.get('/', function(req, res, next) {
-  return res.status(200).send("1");
-});
+  router.get('/', (req, res, next) =>{
+    return res.status(200).send("2");
+  });
 
-module.exports = router;
+  return router;
+}

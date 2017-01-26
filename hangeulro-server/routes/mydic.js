@@ -54,7 +54,7 @@ module.exports = (router, func)=>{
 
           if(!check){
             Mydics.update({owner: token, dicname: dicname}, {$push: {favorite: words.id}}, function(err, com){
-              if(err) return  res.status(500).send("already exists");
+              if(err) return  res.status(412).send("already exists");
 
               Mydics.findOne({owner: token, dicname: dicname}, function(err, mydic){
                 if(err) res.status(500).send("DB Error");
