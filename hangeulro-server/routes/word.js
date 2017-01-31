@@ -1,6 +1,6 @@
 module.exports = (router, func) => {
-  router.get('/', (req, res) =>{
-    Words.find({$query: {}, $orderby: { see : 1 }}, function(err, word) {
+  router.get('/word', (req, res) =>{
+    Words.find({}, function(err, word) {
       if(err) return res.status(500).send(err);
       if(word) return res.status(200).send(word);
     });
