@@ -45,7 +45,7 @@ app.use(passport.session());
 //router setting
 var index = require('./routes/index')(router);
 var auth = require('./routes/auth')(router, rndString, passport, func);
-var word = require('./routes/word');
+var word = require('./routes/word')(router, func);
 var version = require('./routes/version')(router);
 var mydic = require('./routes/mydic')(router, func);
 var board = require('./routes/board')(router, moment, rndString, func);

@@ -498,3 +498,4 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 > sub: {type: String}
 
 > favorite: [String] // array
+

@@ -84,7 +84,7 @@ module.exports = (router, rndString, passport, func) =>{
 
   .post('/login', function(req, res, next) {
     var params = ['userid', 'pw', 'name'];
-    if(!func.check_param(req.body, params, res){
+    if(!func.check_param(req.body, params, res)){
       res.status(400).send("param missing");
     }
 
