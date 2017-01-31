@@ -60,7 +60,9 @@ module.exports = (router) => {
 
   .post('/comment', function(req, res){
     var params = ['token', 'date', 'id', 'summary'];
-    func.check_params(req.body, params, res);
+    if(!func.check_param(req.bdoy, params, token)){
+      res.status(400).send("param missing");
+    }
     var token = req.body.token;
     var date = req.body.date+"";
     var id = req.body.wordid+"";
@@ -85,7 +87,9 @@ module.exports = (router) => {
 
   .get('/:wordid', function(req, res){
     var params = ['wordid'];
-    func.check_params(req.params, params, res);
+    if(!func.check_param(req.bdoy, params, token)){
+      res.status(400).send("param missing");
+    }
     var wordId = req.params.wordid+"";
     var data;
 

@@ -4,6 +4,9 @@ module.exports = (router, moment, rndString, func) =>{
     var boardid = rndString.generate();
     var date = moment().tz("Asia/Seoul").format();
     var params = ['title', 'token', 'contents'];
+    if(!func.check_param(req.bdoy, params, token)){
+      res.status(400).send("param missing");
+    }
 
     func.upload(req, res, boardid, date, params, rndString).then(function (file) {
       var title = req.body.title.replace(/\"/gi, "");
@@ -46,7 +49,9 @@ module.exports = (router, moment, rndString, func) =>{
 
   .post('/comment', function(req, res){
     var params = ['token', 'boardid', 'summary', 'date'];
-    func.check_param(req.body, params, res);
+    if(!func.check_param(req.bdoy, params, token)){
+      res.status(400).send("param missing");
+    }
     var token = req.body.token;
     var boardid = req.body.boardid;
     var summary = req.body.summary;
@@ -68,7 +73,9 @@ module.exports = (router, moment, rndString, func) =>{
 
   .put('/like', function(req, res) {
     var params = ['token', 'boardid'];
-    func.check_param(req.body, params, res);
+    if(!func.check_param(req.bdoy, params, token)){
+      res.status(400).send("param missing");
+    }
 
     var boardid = req.body.boardid;
     var token = req.body.token;
@@ -92,7 +99,9 @@ module.exports = (router, moment, rndString, func) =>{
 
   .put('/dislike', function(req, res) {
     var params = ['token', 'boardid'];
-    func.check_param(req.body, params, res);
+    if(!func.check_param(req.bdoy, params, token)){
+      res.status(400).send("param missing");
+    }
 
     var boardid = req.body.boardid;
 
@@ -112,7 +121,9 @@ module.exports = (router, moment, rndString, func) =>{
   .get('/board/:boardid', function(req, res){
     console.log(req.params);
     var params = ['boardid'];
-    func.check_param(req.params, params, res);
+    if(!func.check_param(req.bdoy, params, token)){
+      res.status(400).send("param missing");
+    }
     var boardid = req.params.boardid;
 
     Boards.findOne({boardid: boardid}, {_id:0, writerToken:0}, function(err, board){
@@ -134,7 +145,9 @@ module.exports = (router, moment, rndString, func) =>{
 
   .put('/edit', function(req, res){
     var params = ['boardid'];
-    func.check_param(req.params, params, res);
+    if(!func.check_param(req.bdoy, params, token)){
+      res.status(400).send("param missing");
+    }
     var title = req.body.title;
     var boardid = req.body.boardid;
     var contents = req.body.contents;

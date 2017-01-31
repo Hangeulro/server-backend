@@ -65,7 +65,7 @@ module.exports = (router, rndString, passport, func) =>{
   router.post('/register', function(req, res, next) {
     var params = ['userid', 'pw', 'name'];
 
-    func.check_param(req.body, params);
+    if(!func.check_param(req.body, params, res)){ res.status(400).send("param missing"); }
     var current = new Users({
       userid: req.body.userid,
       name: req.body.name,
@@ -75,11 +75,7 @@ module.exports = (router, rndString, passport, func) =>{
 
     current.save(function(err, data) {
       if (err) { // TODO handle the error
-        if (err.errmsg.indexOf("dup") !== -1) {
-          return res.status(409).send("already exists");
-        }else{
-          return res.status(500).send("DB Error");
-        }
+        return res.status(500).send("DB Error");
       } else {
         return res.status(200).send(current);
       }
@@ -88,7 +84,9 @@ module.exports = (router, rndString, passport, func) =>{
 
   .post('/login', function(req, res, next) {
     var params = ['userid', 'pw', 'name'];
-    func.check_param(req.body, params, res)
+    if(!func.check_param(req.body, params, res){
+      res.status(400).send("param missing");
+    }
 
     Users.findOne({ userid: req.body.userid, pw: req.body.pw}, function(err, user) {
       if (user) 
@@ -100,7 +98,9 @@ module.exports = (router, rndString, passport, func) =>{
 
   .post('/auto', function(req, res, next) {
     var params = ['token'];
-    func.check_param(req.bdoy, params, token);
+    if(!func.check_param(req.bdoy, params, token)){
+      res.status(400).send("param missing");
+    }
     Users.findOne({token: req.body.token}, function(err, users) {
       if (users) return res.status(200).send(resul);
       else return res.status(401).send("Un Auth");
@@ -138,7 +138,9 @@ module.exports = (router, rndString, passport, func) =>{
 
   .delete('/destroy', function(req, res){
     var params = ['token'];
-    func.check_param(req.body, params, res);
+    if(!func.check_param(req.bdoy, params, token)){
+      res.status(400).send("param missing");
+    }
 
     Users.remove({token: req.body.token}, function(err, users){
       if(err) return res.status(500).sned("DB ERROR");

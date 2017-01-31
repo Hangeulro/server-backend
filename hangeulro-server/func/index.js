@@ -95,10 +95,7 @@ var upload = (req, res, boardid, date, params) => {
 };
 
 var check_param = (req_param, params, res) =>{
-  var check = params.every(str => req_param[str] != undefined || req_param[str] != null);
-  if(!check){
-    res.status(400).send("param missing").end();
-  }
+  return var check = params.every(str => req_param[str] != undefined || req_param[str] != null);
 }
 
 

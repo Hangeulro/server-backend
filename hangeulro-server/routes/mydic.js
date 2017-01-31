@@ -2,7 +2,9 @@ module.exports = (router, func)=>{
 
   router.post('/make', (req, res, next)=>{
     var params = ['dicname', 'sub', 'token'];
-    func.check_param(req.body, params, res);
+    if(!func.check_param(req.bdoy, params, token)){
+      res.status(400).send("param missing");
+    }
 
     var dicname = req.body.dicname;
     var sub = req.body.sub;
@@ -32,7 +34,9 @@ module.exports = (router, func)=>{
 
   .put('/add', function(req, res, next){
     var params = ['dicname', 'token', 'word'];
-    func.check_param(req.body, params, res);
+    if(!func.check_param(req.bdoy, params, token)){
+      res.status(400).send("param missing");
+    }
     var dicname = req.body.dicname;
     var token = req.body.token;
     var word = req.body.word;
@@ -80,7 +84,9 @@ module.exports = (router, func)=>{
 
   .put('/pop', (req, res, next) =>{
     var params = ['dicname', 'token', 'id'];
-    func.check_param(req.body, params, res);
+    if(!func.check_param(req.bdoy, params, token)){
+      res.status(400).send("param missing");
+    }
 
     var token = req.body.token;
     var dicname = req.body.dicname;
@@ -97,7 +103,9 @@ module.exports = (router, func)=>{
   
   .get('/mydic/:token', (req, res) =>{
     var params = ['token'];
-    func.check_param(req.params, params, res);
+    if(!func.check_param(req.bdoy, params, token)){
+      res.status(400).send("param missing");
+    }
     var token = req.params.token;
 
     Mydics.find({owner: token}, function(err, mydic){
@@ -108,7 +116,9 @@ module.exports = (router, func)=>{
 
   .get('/mydic/:token/:dicname', function(req, res){
     var params = ['token', 'dicname'];
-    func.check_param(req.params, params, res);
+    if(!func.check_param(req.bdoy, params, token)){
+      res.status(400).send("param missing");
+    }
     var token = req.params.token;
     var dicname = req.params.dicname;
     var data = [];
