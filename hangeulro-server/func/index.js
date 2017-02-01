@@ -1,7 +1,7 @@
 var multer = require('multer');
 var Q = require('q');
 
-var  profile_upload = (req, res, token, newName) => {
+var profile_upload = (req, res, token, newName) => {
   var deferred = Q.defer();
   var storage = multer.diskStorage({
   // 서버에 저장할 폴더
@@ -95,7 +95,7 @@ var upload = (req, res, boardid, date, params) => {
 };
 
 var check_param = (req_param, params) =>{
-  return params.every(str => req_param[str] != undefined || req_param[str] != null || req_param[str] != "");
+  return params.every(str => req_param[str] != undefined && req_param[str] != null && req_param[str].length > 0);
 }
 
 
