@@ -1,6 +1,5 @@
 module.exports = (router, moment) => {
-
-  router.get('/', (req,res)=>{
+  router.get('/today', (req,res)=>{
     var dt = new Date();
     var today = moment().tz("Asia/Seoul").format("YYYY MM DD");
 

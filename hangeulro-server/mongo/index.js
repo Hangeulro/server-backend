@@ -15,10 +15,10 @@ var UserSchema = new mongoose.Schema({
 });
 
 var MydicSchema = new mongoose.Schema({
-    owner: {type: String},
-    dicname: {type: String},
-    sub: {type: String},
-    favorite: [String]
+  owner: {type: String},
+  dicname: {type: String},
+  sub: {type: String},
+  favorite: [String]
 });
 
 var WordSchema = new mongoose.Schema({
@@ -40,29 +40,29 @@ var WordSchema = new mongoose.Schema({
 });
 
 var BoardSchema = new mongoose.Schema({
-     boardid: {type: String},
-     title: {type: String},
-     writer: {type: String},
-     writerToken: {type: String},
-     writer_profile: {type: String},
-     date: {type: Date},
-     contents: {type: String},
-     imageurl: {type: String, default: "null"},
-     good: {type: Number, default: 0},
-     bad: {type: Number, default: 0},
-     share: {type: Number, default: 0},
+  boardid: {type: String},
+  title: {type: String},
+  writer: {type: String},
+  writerToken: {type: String},
+  writer_profile: {type: String},
+  date: {type: Date},
+  contents: {type: String},
+  imageurl: {type: String, default: "null"},
+  good: {type: Number, default: 0},
+  bad: {type: Number, default: 0},
+  share: {type: Number, default: 0},
 
-     comments:[{
-       writer: {type: String},
-       date: {type: Date},
-       summary: {type: String},
-         profile_image: {type: String},
-     }]
+  comments:[{
+    writer: {type: String},
+    date: {type: Date},
+    summary: {type: String},
+    profile_image: {type: String},
+  }]
 });
 
 var TodayWordSchema= new mongoose.Schema({
-    day: {type: String},
-    wordid: {type: String}
+  day: {type: String},
+  wordid: {type: String}
 });
 
 Users = mongoose.model('users', UserSchema);

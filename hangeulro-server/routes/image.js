@@ -1,5 +1,5 @@
 module.exports = (router) =>{
-  router.get('/:image', function(req, res, next) {
+  router.get('/image/:image', function(req, res, next) {
     res.sendFile("/node/server-backend/hangeulro-server/upload/"+req.params.image);
   })
 

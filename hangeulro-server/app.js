@@ -20,8 +20,18 @@ var multer = require('multer');
 var moment = require('moment-timezone');
 
 
+//serialize
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
 //export settting
-require('./mongo'); //mongodb
+var db = require('./mongo'); //mongodb
 var func = require('./func'); //functions
 
 var port = normalizePort(process.env.PORT || '3000');
@@ -44,7 +54,7 @@ app.use(passport.session());
 
 //router setting
 var index = require('./routes/index')(router);
-var auth = require('./routes/auth')(router, rndString, passport, func);
+var auth = require('./routes/auth')(router, rndString, passport, func, db.Users);
 var word = require('./routes/word')(router, func);
 var version = require('./routes/version')(router);
 var mydic = require('./routes/mydic')(router, func);
@@ -53,7 +63,6 @@ var quize = require('./routes/quize')(router);
 var image = require('./routes/image')(router);
 var my = require('./routes/my')(router, func);
 var today = require('./routes/today')(router, moment);
-
 
 //router
 app.use('/', index);
