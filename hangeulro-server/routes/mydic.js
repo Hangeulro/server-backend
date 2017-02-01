@@ -34,7 +34,7 @@ module.exports = (router, func)=>{
 
   .put('/add', function(req, res, next){
     var params = ['dicname', 'token', 'word'];
-    if(!func.check_param(req.bdoy, params, token)){
+    if(!func.check_param(req.body, params, token)){
       res.status(400).send("param missing");
     }
     var dicname = req.body.dicname;

@@ -61,7 +61,7 @@ var mydic = require('./routes/mydic')(router, func);
 var board = require('./routes/board')(router, moment, rndString, func);
 var quize = require('./routes/quize')(router);
 var image = require('./routes/image')(router);
-var my = require('./routes/my')(router, func);
+var my = require('./routes/my')(router, func, db.Users);
 var today = require('./routes/today')(router, moment);
 
 //router

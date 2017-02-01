@@ -1,11 +1,10 @@
-module.exports = (router, func) => {
+module.exports = (router, func, Users) => {
   router.get('/my/:token', function(req, res) {
     var params = ['token'];
-    if(!func.check_param(req.bdoy, params, token)){
-      res.status(400).send("param missing");
+    if(!func.check_param(req.params, params, token)){
+      return res.status(400).send("param missing");
     }
-
-    var token = req.param.token;
+    var token = req.params.token;
 
     Users.findOne({token: token},{_id: 0 , userid: 0, token:0} ,function(err, user){
       if(err) return res.status(500).send("DB Error");
@@ -16,7 +15,7 @@ module.exports = (router, func) => {
 
   .put('/pointUp', function(req, res) {
     var params = ['token', 'pointUp'];
-    if(!func.check_param(req.bdoy, params, token)){
+    if(!func.check_param(req.body, params, token)){
       res.status(400).send("param missing");
     }
     
@@ -60,7 +59,7 @@ module.exports = (router, func) => {
 
   .get('/board', (req, res) =>{
     var params = ['token'];
-    if(!func.check_param(req.bdoy, params, token)){
+    if(!func.check_param(req.params, params, token)){
       res.status(400).send("param missing");
     }
 
@@ -81,7 +80,7 @@ module.exports = (router, func) => {
 
   .put('/edit', function(req, res){
     var params = ['token','newName'];
-    if(!func.check_param(req.bdoy, params, token)){
+    if(!func.check_param(req.body, params, token)){
       res.status(400).send("param missing");
     }
 
