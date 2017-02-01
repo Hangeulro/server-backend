@@ -1,6 +1,5 @@
 module.exports = (router) => {
-
-  router.get('/', (req, res, next) =>{
+  router.get('/version', (req, res, next) =>{
     return res.status(200).send("2");
   });
 

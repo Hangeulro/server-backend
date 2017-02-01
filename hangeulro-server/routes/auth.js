@@ -1,7 +1,7 @@
 var FacebookTokenStrategy = require('passport-facebook-token');
 var TwitterTokenStrategy = require('passport-twitter-token');
 
-module.exports = (router, rndString, passport, func) =>{
+module.exports = (router, rndString, passport, func, Users) =>{
   passport.use(new FacebookTokenStrategy({
     clientID: "1213122912074048",
     clientSecret: "259b6ddcb09ade12157f47f4fb2d5c95",
@@ -60,8 +60,6 @@ module.exports = (router, rndString, passport, func) =>{
     })
   }));
 
-
-
   router.post('/register', function(req, res, next) {
     var params = ['userid', 'pw', 'name'];
 
@@ -83,9 +81,9 @@ module.exports = (router, rndString, passport, func) =>{
   })
 
   .post('/login', function(req, res, next) {
-    var params = ['userid', 'pw', 'name'];
-    if(!func.check_param(req.body, params, res){
-      res.status(400).send("param missing");
+    var params = ['userid', 'pw'];
+    if(!func.check_param(req.body, params, res)){
+      return res.status(400).send("param missing");
     }
 
     Users.findOne({ userid: req.body.userid, pw: req.body.pw}, function(err, user) {
@@ -98,20 +96,24 @@ module.exports = (router, rndString, passport, func) =>{
 
   .post('/auto', function(req, res, next) {
     var params = ['token'];
-    if(!func.check_param(req.bdoy, params, token)){
-      res.status(400).send("param missing");
+    if(!func.check_param(req.body, params, params)){
+      return res.status(400).send("param missing");
     }
-    Users.findOne({token: req.body.token}, function(err, users) {
-      if (users) return res.status(200).send(resul);
+
+    Users.find({}, function(err, users) {
+      console.log(users);
+      if(err) return res.status(500).sned(err);
+      if (users) return res.status(200).send(users);
       else return res.status(401).send("Un Auth");
     });
+
   })
 
   .get('/fb/token', passport.authenticate('facebook-token'), function(req, res) {
     if (req.user) {
       Users.findOne({userid: req.user.userid}, function(err, users) {
         if(err) err;
-        if(users) res.status(200).send(result);
+        if(users) res.status(200).send(users);
         else res.status(401).send("not found");
       });
     } else if (!req.user) {

@@ -173,7 +173,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
     HTTP 200 : return version [String]
 
 
-* POST /mydic (change POST /mydic to GET /mydic/:token)
+* GET /mydic/:token (change POST /mydic to GET /mydic/:token)
 
     > Response
 
@@ -206,7 +206,7 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     dicname: mydic name  [String]
 
-    id: add word id [String]
+    word: add word name [String]
 
 > Response
 
@@ -224,13 +224,29 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
     dicname: mydic name  [String]
 
-    id: pop word id [String]
+    wrod: pop word name [String]
 
 > Response
 
     HTTP 200 : return word list [String array]
 
     HTTP 409 : send reason "already exists" or DB ERROR
+
+* GET  /mydic/:token/:dicname (change post /mydic/detail/ to GET  /mydic/:token/:dicname)
+
+> Params
+
+    token: mydic token  [String]
+
+    dicname: mydic name  [String]
+
+> Response
+
+    HTTP 200 : return word list [String array]
+
+    HTTP 404 : not found
+
+    HTTP 500 : DB ERROR
 
 
 * GET /board (it change post to get)
@@ -498,3 +514,4 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 > sub: {type: String}
 
 > favorite: [String] // array
+

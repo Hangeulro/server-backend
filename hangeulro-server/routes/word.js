@@ -1,9 +1,8 @@
-module.exports = (router) => {
-
-  router.get('/', (req, res) =>{
-    Words.find({$query: {}, $orderby: { see : 1 }}, function(err, word) {
-      if(err) err;
-      return res.status(200).send(word);
+module.exports = (router, func) => {
+  router.get('/word', (req, res) =>{
+    Words.find({}, function(err, word) {
+      if(err) return res.status(500).send(err);
+      if(word) return res.status(200).send(word);
     });
   })
 
@@ -85,9 +84,9 @@ module.exports = (router) => {
     });
   })
 
-  .get('/:wordid', function(req, res){
+  .get('/word/:wordid', function(req, res){
     var params = ['wordid'];
-    if(!func.check_param(req.bdoy, params, token)){
+    if(!func.check_param(req.params, params)){
       res.status(400).send("param missing");
     }
     var wordId = req.params.wordid+"";
