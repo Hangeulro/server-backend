@@ -63,7 +63,8 @@ module.exports = (router, rndString, passport, func, Users) =>{
   router.post('/register', function(req, res, next) {
     var params = ['userid', 'pw', 'name'];
 
-    if(!func.check_param(req.body, params, res)){ res.status(400).send("param missing"); }
+    if(!func.check_param(req.body, params)) return res.status(400).send("param missing"); 
+    console.log(req.body);
     var current = new Users({
       userid: req.body.userid,
       name: req.body.name,
@@ -100,7 +101,7 @@ module.exports = (router, rndString, passport, func, Users) =>{
       return res.status(400).send("param missing");
     }
 
-    Users.find({}, function(err, users) {
+    Users.findOne({token: req.body.token}, function(err, users) {
       console.log(users);
       if(err) return res.status(500).sned(err);
       if (users) return res.status(200).send(users);

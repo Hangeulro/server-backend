@@ -21,7 +21,7 @@ module.exports = (router)=>{
       if(err) err;
       if(words){
         for(var i = 0; i<quize.length; i++){
-          data.push(result[quize[i]]);
+          data.push(words[quize[i]]);
         }
         return res.status(200).send(data);
       }
