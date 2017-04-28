@@ -74,6 +74,7 @@ module.exports = (router, rndString, passport, func, Users) =>{
 
     current.save(function(err, data) {
       if (err) { // TODO handle the error
+        console.log(err);
         return res.status(500).send("DB Error");
       } else {
         return res.status(200).send(current);
@@ -139,13 +140,13 @@ module.exports = (router, rndString, passport, func, Users) =>{
     failureRedirect: '/'
   }))
 
-  .delete('/destroy', function(req, res){
+  .delete('/destroy/:token', function(req, res){
     var params = ['token'];
-    if(!func.check_param(req.bdoy, params, token)){
+    if(!func.check_param(req.params, params)){
       res.status(400).send("param missing");
     }
 
-    Users.remove({token: req.body.token}, function(err, users){
+    Users.remove({token: req.params.token}, function(err, users){
       if(err) return res.status(500).sned("DB ERROR");
       if(users) return res.status(200).send("good bye");
       else return res.status(404).send("user not found")
