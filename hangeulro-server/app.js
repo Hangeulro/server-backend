@@ -19,10 +19,6 @@ const morgan = require('morgan');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-//spec
-if(process.env.NODE_ENV !== 'test')
-  app.use(morgan('dev'));
-
 //serialize
 
 passport.serializeUser(function(user, done) {done(null, user);});
