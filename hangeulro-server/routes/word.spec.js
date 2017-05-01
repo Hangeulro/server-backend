@@ -53,7 +53,7 @@ describe('GET /cata/{cata}는', ()=>{
 describe('POST /word/{wordid}는', ()=>{
   describe('성공시', (done)=>{
     it("200과 JSON 배열 보넴", (done)=>{
-      request.post('/word/find').send({search:'일'}).expect(200).end((err, res)=>{
+      request.get('/word/1').expect(200).end((err, res)=>{
           res.should.be.json;
           res.body.should.be.instanceOf(Array);
           done();
@@ -61,9 +61,15 @@ describe('POST /word/{wordid}는', ()=>{
     });
   });
 
+  describe('파라미터가 없거나 잘못보넷을경우', (done)=>{
+    it("400을 보넴", (done)=>{
+      request.get('/word/asdf').send({search:'일'}).expect(400).end(done);
+    });
+  });
+
   describe('실패시', (done)=>{
     it("404를보넴", (done)=>{
-      request.post('/word/find').send({search:'ㅁㄴㅇㄻㄴㅇ'}).expect(404).end(done);
+      request.get('/word/14141414441').expect(404).end(done);
     });
   });
 });

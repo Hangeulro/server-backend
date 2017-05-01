@@ -62,11 +62,12 @@ module.exports = (router, func) => {
 
   .get('/word/:wordid', function(req, res){
     var params = ['wordid'];
-    if(!func.check_param(req.params, params)){
-      res.status(400).send("param missing");
-    }
     var wordId = req.params.wordid+"";
     var data;
+
+    if(Number.isNaN(parseInt(wordId)) || !func.check_param(req.params, params))
+      res.status(400).send("param missing");
+
 
     Words.findOne({id: wordId}, function (err, result) {
       if (err) return err;
@@ -81,7 +82,8 @@ module.exports = (router, func) => {
         });
 
         return res.status(200).json([result]);
-      }
+      }else
+        return res.status(404).send("not found");
     });
   });
 
