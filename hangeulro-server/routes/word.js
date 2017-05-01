@@ -10,16 +10,14 @@ module.exports = (router, func) => {
     var sh = req.body.search;
     var data = [];
 
-    Words.find({$query: {}, $orderby: { see : 1 }}, function(err, result){
+    Words.find({$query:{word: { $regex: sh }} , $orderby: { see : 1 }}, (err, result)=>{
       if(err){
          return res.status(400).send(err);
          throw err;
       }
 
       for(var i = 0; i<result.length; i++){
-        if (result[i].word.indexOf(sh) !== -1) {
-          data.push(result[i]);
-        }else if(result[i].similar !== null){
+        if(result[i].similar !== null){
           for(var j = 0; j<result[i].similar.length; j++){
             if(result[i].similar[j].indexOf(sh) !== -1){
               data.push(result[i]);
@@ -27,7 +25,7 @@ module.exports = (router, func) => {
           }
         }
       }
-      return res.status(200).send(data);
+      return data.length != 0 ? res.status(200).send(data) : res.status(404).send("DB에 없거나 잘못검색하셨습니다");
     });
   })
 
@@ -35,7 +33,7 @@ module.exports = (router, func) => {
     var cata = req.params.cata;
     var data = [];
 
-    Words.find({$query: {}, $orderby: { see : 1 }} , function(err, result){
+    Words.find({$query: {}, $orderby: { see : 1 }} , (err, result)=>{
       if(err){
          return res.status(400).send(err);
          throw err;
@@ -57,7 +55,7 @@ module.exports = (router, func) => {
     });
   })
 
-  .post('/comment', function(req, res){
+  .post('/comment', (req, res)=>{
     var params = ['token', 'date', 'id', 'summary'];
     if(!func.check_param(req.bdoy, params, token)){
       res.status(400).send("param missing");
