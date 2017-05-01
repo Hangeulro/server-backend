@@ -10,22 +10,12 @@ module.exports = (router, func) => {
     var sh = req.body.search;
     var data = [];
 
-    Words.find({$query:{word: { $regex: sh }} , $orderby: { see : 1 }}, (err, result)=>{
+    Words.find({$or: [{word: { $regex: sh }}, {cata: {$elemMatch: { $regex: sh }}}, {similar: {$elemMatch: { $regex: sh }}}]}, (err, words)=>{
       if(err){
          return res.status(400).send(err);
          throw err;
       }
-
-      for(var i = 0; i<result.length; i++){
-        if(result[i].similar !== null){
-          for(var j = 0; j<result[i].similar.length; j++){
-            if(result[i].similar[j].indexOf(sh) !== -1){
-              data.push(result[i]);
-            }
-          }
-        }
-      }
-      return data.length != 0 ? res.status(200).send(data) : res.status(404).send("DB에 없거나 잘못검색하셨습니다");
+      return words.length > 0 ? res.status(200).send(words):res.status(404).send("DB에 없거나 잘못검색하셨습니다");
     });
   })
 
@@ -33,28 +23,16 @@ module.exports = (router, func) => {
     var cata = req.params.cata;
     var data = [];
 
-    Words.find({$query: {}, $orderby: { see : 1 }} , (err, result)=>{
+    Words.find({cata: {$elemMatch: { $regex: cata }}} , (err, catas)=>{
       if(err){
          return res.status(400).send(err);
          throw err;
       }
-
-     for(var i = 0; i<result.length; i++){
-       if(result[i].cata == null && cata === '일'){
-          data.push(result[i]);
-       }else if(result[i].cata !== null){
-        for(var j = 0; j<result[i].cata.length; j++){
-         if(result[i].cata[j].indexOf(cata) !== -1){
-           data.push(result[i]);
-         }
-       }
-      }
-     }
-
-      return res.status(200).send(data);
+      return catas.length > 0 ? res.status(200).send(catas):res.status(404).send("DB에 없거나 잘못검색하셨습니다");
     });
   })
 
+  //더이상 사용되지않음
   .post('/comment', (req, res)=>{
     var params = ['token', 'date', 'id', 'summary'];
     if(!func.check_param(req.bdoy, params, token)){
@@ -102,11 +80,7 @@ module.exports = (router, func) => {
             if(err) err;
         });
 
-        Words.find({id: id}, function(err, result){
-          if(err) err;
-          return res.status(200).send(result);
-        });
-
+        return res.status(200).json([result]);
       }
     });
   });
