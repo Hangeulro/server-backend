@@ -13,6 +13,8 @@ hangeulro Project (smarteen app challenge 2016) Node.JS Backend
 
 ## API Document
 
+api document will migrate to [here](http://github.com/Hangeulro/server-backend/wiki)
+
 * Common Response
   (all DB err change 409 to 500)
   HTTP 200: Success
