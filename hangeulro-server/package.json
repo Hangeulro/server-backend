@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "test": "NODE_ENV=test mocha ./app.spec.js",
-    "start": "cross-env nodemon --ignore 'public/js/*' --exec babel-node ."
+    "start": "cross-env nodemon --ignore 'public/js/*' --exec babel-node ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.15.1",
@@ -26,12 +26,13 @@
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {
-    "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-plugin-transform-function-bind": "^6.22.0",
     "babel-plugin-transform-regenerator": "^6.26.0",
     "babel-preset-env": "^1.6.0",
-    "babel-preset-stage-3": "^6.24.1"
+    "babel-preset-stage-3": "^6.24.1",
+    "should": "^13.2.1",
+    "supertest": "^3.0.0"
   }
 }
