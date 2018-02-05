@@ -65,11 +65,11 @@ var TodayWordSchema= new mongoose.Schema({
   wordid: {type: String}
 });
 
-Users = mongoose.model('users', UserSchema);
-Words = mongoose.model('words', WordSchema);
-Boards = mongoose.model('boards', BoardSchema);
-TodayWords = mongoose.model('todaywords', TodayWordSchema);
-Mydics = mongoose.model('mydics', MydicSchema);
+let Users = mongoose.model('users', UserSchema);
+let Words = mongoose.model('words', WordSchema);
+let Boards = mongoose.model('boards', BoardSchema);
+let TodayWords = mongoose.model('todaywords', TodayWordSchema);
+let Mydics = mongoose.model('mydics', MydicSchema);
 
 exports.Mydics = Mydics;
 exports.Boards = Boards;
