@@ -14,7 +14,7 @@
     "express": "~4.15.2",
     "gm": "^1.23.0",
     "moment": "^2.15.1",
-    "moment-timezone": "^0.5.7",
+    "moment-timezone": "^0.5.35",
     "mongoose": "^5.7.5",
     "morgan": "~1.7.0",
     "multer": "^1.2.0",
